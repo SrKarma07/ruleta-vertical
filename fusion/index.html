@@ -12,15 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <!-- Header -->
-    <header class="header d-flex align-items-center justify-content-between px-4">
-        <a href="#" onclick="location.reload();" class="d-flex align-items-center">
-            <img src="https://static.vecteezy.com/system/resources/thumbnails/013/760/641/small/ecuador-circle-flag-png.png" alt="Logo">
-        </a>
-        <h1 class="p-3 flex-grow-1 m-0">Ruleta Aleatoria</h1>
-        <span class="p-3">Ministerio de Educación</span>
-    </header>
-
     <!-- Contenido principal -->
     <div class="container-fluid p-3 flex-grow-1 contenedor-principal">
         <!-- Interfaz de selección de ruleta -->
@@ -52,7 +43,7 @@
                     <div class="sidebar">
                         <h2 class="navbar-title">Configuración</h2>
 
-                        <h5 style="color: white;" class="mt-4">Número de ganadores</h5>
+                        <h5 class="mt-4">Número de ganadores</h5>
                         <select id="numWinners" class="form-select mb-4">
                             <option value="1">1 Ganador</option>
                             <option value="2">2 Ganadores</option>
@@ -113,7 +104,6 @@
                 <div id="circular-roulette" class="ruleta-container mb-3 d-none">
                     <div class="ruleta-wrapper">
                         <canvas id="canvas"></canvas>
-                        <div id="spin-btn" class="btn-circle">Girar</div>
                         <div id="triangle"></div>
                     </div>
                 </div>
@@ -121,23 +111,25 @@
                 <!-- Ruleta vertical -->
                 <div id="vertical-roulette" class="ruleta-container mb-3 d-none">
                     <canvas id="ruletaCanvas" width="300" height="300"></canvas>
-                    <button id="startButton" class="btn btn-primary mt-2">Iniciar Ruleta</button>
                 </div>
 
                 <!-- Capa oscura para el giro -->
                 <div id="spinOverlay">
                     <div id="ruletaContainer">
-                        <!-- Ruleta ampliada (vertical) -->
+                        <!-- Ruleta ampliada -->
                         <canvas id="ruletaCanvasBig" width="400" height="400"></canvas>
-                        <!-- Flechas indicando al ganador (solo para ruleta vertical) -->
-                        <div id="arrowTop" class="arrow"></div>
-                        <div id="arrowBottom" class="arrow"></div>
+                        <!-- Flechas indicando al ganador (para ruleta vertical) -->
+                        <div id="arrowLeft" class="arrow"></div>
+                        <div id="arrowRight" class="arrow"></div>
+                        <!-- Ruleta circular ampliada -->
+                        <canvas id="canvasBig"></canvas>
+                        <div id="triangleBig"></div>
                     </div>
                 </div>
 
                 <!-- Capa oscura para el ganador -->
                 <div id="overlay">
-                    <!-- Agregamos el GIF encima del nombre del ganador -->
+                    <!-- Imagen de ganador -->
                     <img id="winnerGif" src="https://media.tenor.com/vP00ZuXznUUAAAAi/ganador-soyganador.gif" alt="Ganador">
                     <div id="winner"></div>
                     <button id="closeButton" class="hidden">&times;</button>

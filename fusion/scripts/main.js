@@ -12,20 +12,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const canvasCircular = document.getElementById("canvas");
     const ctxCircular = canvasCircular.getContext("2d");
+    const canvasBigCircular = document.getElementById('canvasBig');
+    const ctxBigCircular = canvasBigCircular.getContext('2d');
+
     const canvasVertical = document.getElementById('ruletaCanvas');
     const ctxVertical = canvasVertical.getContext('2d');
-    const canvasBig = document.getElementById('ruletaCanvasBig');
-    const ctxBig = canvasBig.getContext('2d');
+    const canvasBigVertical = document.getElementById('ruletaCanvasBig');
+    const ctxBigVertical = canvasBigVertical.getContext('2d');
+
     const spinOverlay = document.getElementById('spinOverlay');
     const overlay = document.getElementById('overlay');
     const winnerDiv = document.getElementById('winner');
     const winnerText = document.getElementById('winnerText');
-    const startButton = document.getElementById('startButton');
-    const spinBtnCircular = document.getElementById("spin-btn");
     const closeButton = document.getElementById('closeButton');
 
     const newRaffleBtn = document.getElementById('newRaffleBtn');
     const spinAgainBtn = document.getElementById('spinAgainBtn');
+
+    const arrowLeft = document.getElementById('arrowLeft');
+    const arrowRight = document.getElementById('arrowRight');
+    const triangleBig = document.getElementById('triangleBig');
+
+    const numWinnersSelect = document.getElementById('numWinners');
 
     // Variables generales
     let currentRoulette = ''; // 'circular' o 'vertical'
@@ -60,12 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
     selectVerticalRouletteBtn.addEventListener('click', () => selectRoulette('vertical'));
     startRaffleBtn.addEventListener('click', goToRouletteInterface);
 
-    spinBtnCircular.addEventListener("click", spin);
-    startButton.addEventListener("click", spin);
-    closeButton.addEventListener('click', closeOverlay);
-
-    newRaffleBtn.addEventListener('click', resetApplication);
     spinAgainBtn.addEventListener('click', spinAgain);
+    newRaffleBtn.addEventListener('click', resetApplication);
+    closeButton.addEventListener('click', closeOverlay);
 
     window.addEventListener('resize', resizeCanvas);
 
@@ -102,15 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Función para girar la ruleta
-    function spin() {
-        if (currentRoulette === 'circular') {
-            spinCircular();
-        } else if (currentRoulette === 'vertical') {
-            spinVertical();
-        }
-    }
-
     // Función para girar de nuevo sin reiniciar todo
     function spinAgain() {
         overlay.classList.remove('visible');
@@ -122,6 +118,13 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (currentRoulette === 'vertical') {
             spinVertical();
         }
+    }
+
+    // Función para cerrar el overlay
+    function closeOverlay() {
+        overlay.classList.remove('visible');
+        closeButton.classList.add('hidden');
+        stopConfetti();
     }
 
     // Funciones para la ruleta circular
@@ -162,25 +165,25 @@ document.addEventListener('DOMContentLoaded', function() {
         ctxCircular.fillStyle = '#212121';
         ctxCircular.fill();
 
-        let startDeg = currentDeg;
+        let startDeg = 0;
         items.forEach((item, index) => {
             const endDeg = startDeg + step;
             const color = colors[item];
             ctxCircular.beginPath();
+            ctxCircular.moveTo(centerX, centerY);
             ctxCircular.arc(centerX, centerY, radius, toRad(startDeg), toRad(endDeg));
+            ctxCircular.closePath();
             ctxCircular.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
-            ctxCircular.lineTo(centerX, centerY);
             ctxCircular.fill();
 
+            // Dibujar texto
             ctxCircular.save();
             ctxCircular.translate(centerX, centerY);
             ctxCircular.rotate(toRad((startDeg + endDeg) / 2));
-            ctxCircular.textAlign = "center";
+            ctxCircular.textAlign = "right";
             ctxCircular.fillStyle = getContrastColor(color);
             ctxCircular.font = `${Math.min(radius / 10, 16)}px sans-serif`;
-            ctxCircular.translate(radius - 40, 0);
-            ctxCircular.rotate(-toRad((startDeg + endDeg) / 2));
-            ctxCircular.fillText(item.length > 15 ? `${item.slice(0, 13)}...` : item, 0, 0);
+            ctxCircular.fillText(item.length > 15 ? `${item.slice(0, 13)}...` : item, radius - 10, 0);
             ctxCircular.restore();
 
             startDeg += step;
@@ -196,42 +199,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function spinAndSelect() {
             if (spinsRemaining > 0 && items.length > 0) {
-                const randomTurns = Math.floor(Math.random() * 11) + 10;
+                const randomTurns = Math.floor(Math.random() * 4) + 4;
                 const winnerIndex = Math.floor(Math.random() * items.length);
                 const degreesPerItem = 360 / items.length;
                 const winnerAngle = winnerIndex * degreesPerItem;
                 const finalRotation = randomTurns * 360 + (360 - winnerAngle - degreesPerItem / 2);
 
                 isSpinning = true;
-                speed = finalRotation / (7 * 60);
 
-                animateSpin(() => {
-                    updateWinner(numWinners);
-                    spinsRemaining--;
-                    if (spinsRemaining > 0) {
-                        spinAndSelect();
+                let currentRotation = 0;
+                const totalFrames = 100;
+                const easeOutQuad = t => t * (2 - t);
+
+                showSpinOverlay('circular');
+
+                function animateSpinCircular(frame) {
+                    const progress = easeOutQuad(frame / totalFrames);
+                    currentDeg = finalRotation * progress;
+                    drawWheelBig();
+                    if (frame < totalFrames) {
+                        requestAnimationFrame(() => animateSpinCircular(frame + 1));
                     } else {
                         isSpinning = false;
+                        updateWinner(numWinners);
+                        spinsRemaining--;
+                        if (spinsRemaining > 0) {
+                            items.splice(winnerIndex, 1);
+                            createWheel();
+                            updateNamesList();
+                            spinAndSelect();
+                        } else {
+                            spinOverlay.classList.remove('visible');
+                        }
                     }
-                });
+                }
+
+                animateSpinCircular(0);
             }
         }
 
         spinAndSelect();
     }
 
-    function animateSpin(callback) {
-        if (speed > 0) {
-            currentDeg = (currentDeg + speed) % 360;
-            speed *= 0.985;
-            if (speed < 0.2) {
-                speed = 0;
-                callback();
-            } else {
-                drawWheel();
-                requestAnimationFrame(() => animateSpin(callback));
-            }
-        }
+    function drawWheelBig() {
+        ctxBigCircular.clearRect(0, 0, canvasBigCircular.width, canvasBigCircular.height);
+        ctxBigCircular.save();
+        ctxBigCircular.translate(canvasBigCircular.width / 2, canvasBigCircular.height / 2);
+        ctxBigCircular.rotate(toRad(currentDeg));
+        ctxBigCircular.drawImage(canvasCircular, -canvasBigCircular.width / 2, -canvasBigCircular.height / 2, canvasBigCircular.width, canvasBigCircular.height);
+        ctxBigCircular.restore();
     }
 
     function updateWinner(numWinners) {
@@ -243,11 +259,6 @@ document.addEventListener('DOMContentLoaded', function() {
             winners.push(winnerName);
             winnerText.textContent = `Ganador${winners.length > 1 ? 'es' : ''}: ${winners.join(', ')}`;
             showWinner(winners.join(', '));
-            if (numWinners > 1) {
-                items.splice(winnerIndex, 1);
-                createWheel();
-                updateNamesList();
-            }
         }
     }
 
@@ -264,10 +275,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const newCanvasBigHeight = Math.min(totalItemsHeight, maxCanvasBigHeight);
 
         canvasVertical.height = newCanvasHeight;
-        canvasBig.height = newCanvasBigHeight;
+        canvasBigVertical.height = newCanvasBigHeight;
 
         canvasVertical.style.height = newCanvasHeight + 'px';
-        canvasBig.style.height = newCanvasBigHeight + 'px';
+        canvasBigVertical.style.height = newCanvasBigHeight + 'px';
 
         updatePosition();
         draw(ctxVertical, canvasVertical, position);
@@ -301,27 +312,33 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < names.length; i++) {
             let yPosition = posY + i * itemHeight;
 
-            if (yPosition + itemHeight > 0 && yPosition - itemHeight < canvasElement.height) {
-                const centerY = canvasElement.height / 2;
-                const distanceFromCenter = Math.abs(yPosition + itemHeight / 2 - centerY);
-                const maxDistance = canvasElement.height / 2;
-
-                let opacity = 1 - (distanceFromCenter / maxDistance);
-                opacity = Math.max(0, Math.min(1, opacity));
-
-                let saturation = opacity * 100;
-
-                let color = adjustColorSaturation(colorsVertical[i], saturation);
-
-                context.fillStyle = color;
-                context.globalAlpha = opacity;
-                context.fillRect(50, yPosition, canvasElement.width - 100, itemHeight - 10);
-
-                context.fillStyle = '#000';
-                context.fillText(names[i], canvasElement.width / 2, yPosition + itemHeight / 2 + 5);
-
-                context.globalAlpha = 1;
+            // Ajuste para repetir la lista de nombres
+            while (yPosition + itemHeight < 0) {
+                yPosition += totalHeight;
             }
+            while (yPosition > canvasElement.height) {
+                yPosition -= totalHeight;
+            }
+
+            const centerY = canvasElement.height / 2;
+            const distanceFromCenter = Math.abs(yPosition + itemHeight / 2 - centerY);
+            const maxDistance = canvasElement.height / 2;
+
+            let opacity = 1 - (distanceFromCenter / maxDistance);
+            opacity = Math.max(0, Math.min(1, opacity));
+
+            let saturation = opacity * 100;
+
+            let color = adjustColorSaturation(colorsVertical[i], saturation);
+
+            context.fillStyle = color;
+            context.globalAlpha = opacity;
+            context.fillRect(50, yPosition, canvasElement.width - 100, itemHeight - 10);
+
+            context.fillStyle = '#000';
+            context.fillText(names[i], canvasElement.width / 2, yPosition + itemHeight / 2 + 5);
+
+            context.globalAlpha = 1;
         }
     }
 
@@ -339,10 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
         position -= extraRotations * itemHeight;
 
-        overlay.classList.remove('visible');
-        closeButton.classList.add('hidden');
-        spinOverlay.classList.add('visible');
-        draw(ctxBig, canvasBig, position);
+        showSpinOverlay('vertical');
         animationFrame = requestAnimationFrame(animate);
     }
 
@@ -363,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        draw(ctxBig, canvasBig, position);
+        draw(ctxBigVertical, canvasBigVertical, position);
         animationFrame = requestAnimationFrame(animate);
     }
 
@@ -371,18 +385,36 @@ document.addEventListener('DOMContentLoaded', function() {
         isAnimating = false;
 
         const totalHeight = names.length * itemHeight;
-        let winnerIndex = Math.floor((-position + canvasBig.height / 2) / itemHeight) % names.length;
+        let winnerIndex = Math.floor((-position + canvasBigVertical.height / 2) / itemHeight) % names.length;
         if (winnerIndex < 0) winnerIndex += names.length;
 
-        position = -((winnerIndex * itemHeight) - canvasBig.height / 2 + itemHeight / 2);
+        position = -((winnerIndex * itemHeight) - canvasBigVertical.height / 2 + itemHeight / 2);
 
-        draw(ctxBig, canvasBig, position);
-
-        draw(ctxVertical, canvasVertical, position);
+        draw(ctxBigVertical, canvasBigVertical, position);
 
         setTimeout(() => {
             showWinner(names[winnerIndex]);
-        }, 2000);
+        }, 1000);
+    }
+
+    // Función para mostrar el overlay de giro
+    function showSpinOverlay(type) {
+        overlay.classList.remove('visible');
+        closeButton.classList.add('hidden');
+        spinOverlay.classList.add('visible');
+        if (type === 'circular') {
+            canvasBigCircular.style.display = 'block';
+            triangleBig.style.display = 'block';
+            canvasBigVertical.style.display = 'none';
+            arrowLeft.style.display = 'none';
+            arrowRight.style.display = 'none';
+        } else if (type === 'vertical') {
+            canvasBigVertical.style.display = 'block';
+            arrowLeft.style.display = 'block';
+            arrowRight.style.display = 'block';
+            canvasBigCircular.style.display = 'none';
+            triangleBig.style.display = 'none';
+        }
     }
 
     // Función para mostrar el ganador
@@ -395,13 +427,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             closeButton.classList.remove('hidden');
         }, 3000);
-    }
-
-    // Función para cerrar el overlay
-    function closeOverlay() {
-        overlay.classList.remove('visible');
-        closeButton.classList.add('hidden');
-        stopConfetti();
     }
 
     // Funciones auxiliares
@@ -457,6 +482,4 @@ document.addEventListener('DOMContentLoaded', function() {
             b: Math.round(255 * f(4))
         };
     }
-
-    // Fin del script
 });
