@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta Vertical de Nombres</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Ruleta Vertical</h1>
+    <div id="controls">
+        <input type="text" id="nameInput" placeholder="Introduce un nombre" />
+        <button id="addNameButton">Añadir Nombre</button>
+    </div>
+    <canvas id="ruletaCanvas" width="300" height="300"></canvas>
+    <button id="startButton">Iniciar Ruleta</button>
+
+    <!-- Capa oscura para el giro -->
+    <div id="spinOverlay">
+        <!-- Contenedor de la ruleta y las flechas -->
+        <div id="ruletaContainer">
+            <!-- Ruleta ampliada -->
+            <canvas id="ruletaCanvasBig" width="400" height="400"></canvas>
+            <!-- Flechas indicando al ganador -->
+            <div id="arrowTop" class="arrow"></div>
+            <div id="arrowBottom" class="arrow"></div>
+        </div>
+    </div>
+
+    <!-- Capa oscura para el ganador -->
+    <div id="overlay">
+        <!-- Agregamos el GIF encima del nombre del ganador -->
+        <img id="winnerGif" src="https://media.tenor.com/vP00ZuXznUUAAAAi/ganador-soyganador.gif" alt="Ganador">
+        <div id="winner"></div>
+        <button id="closeButton" class="hidden">&times;</button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="main.js"></script>
+    <script src="animation.js"></script>
+    <script src="confetti.js"></script>
+</body>
+</html>

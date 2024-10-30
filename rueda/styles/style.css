@@ -1,0 +1,387 @@
+/* Author: Jeremy David Torres Páez*/
+/* Last Modified: 2024-10-14 */
+
+/* Estilos generales */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: rgb(255,255,255);
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(157,149,195,1) 100%);
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+.header, .footer {
+    background-color: #276db3;
+    color: white;
+}
+
+.header {
+    position: relative;
+}
+
+.header h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.header span {
+    font-size: 1rem;
+}
+
+.header img {
+    width: auto;
+    height: 60px;
+    max-height: 80px;
+    object-fit: contain;
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+}
+
+.footer p, .footer small {
+    margin: 0;
+}
+
+/* Ajustes para mantener el header lineal en móvil */
+@media (max-width: 768px) {
+    .header {
+        flex-wrap: nowrap;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .header span {
+        font-size: 0.9rem;
+    }
+
+    .header img {
+        height: 50px;
+        margin-right: 10px;
+    }
+
+    .footer p {
+        font-size: 0.8rem;
+    }
+
+    .footer small {
+        font-size: 0.7rem;
+    }
+
+    .footer span {
+        display: inline-block;
+    }
+}
+
+.contenedor-principal {
+    flex: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.row {
+    width: 100%;
+}
+
+.sidebar {
+    background: linear-gradient(145deg, #556cd6, #3b4cca);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navbar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+    color: white;
+}
+
+.btn-option {
+    color: white;
+    background: #556cd6;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+}
+
+.btn-option:hover {
+    background-color: #3b4cca;
+    transform: scale(1.05);
+    font-weight: bold;
+    color: white;
+}
+
+.controls-wrapper {
+    width: 100%;
+}
+
+.control-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.control-section button {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+    display: inline-block;
+}
+
+.control-section input {
+    width: 100%;
+}
+
+input,
+button,
+select {
+    font-family: inherit;
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.btn-group-horizontal {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn-warning,
+.btn-danger {
+    border-radius: 8px;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-warning {
+    background-color: #ffa726;
+    border: none;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    border: none;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #fb8c00;
+    transform: scale(1.05);
+    font-weight: bold;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+    font-weight: bold;
+    color: white;
+}
+
+.ruleta-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    max-width: 100%;
+    padding: 0;
+}
+
+.ruleta-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#canvas {
+    width: 70vw;
+    max-width: 350px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid #556cd6;
+    transition: width 0.3s;
+}
+
+#spin-btn {
+    position: absolute;
+    top: 43%;
+    left: 40%;
+    background-color: #556cd6;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#spin-btn:hover {
+    background-color: #3b4cca;
+    transform: scale(1.1);
+}
+
+#triangle {
+    position: relative;
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid #ff5722;
+    left: -5px;
+    top: -3px;
+    transform: rotate(25deg);
+}
+
+.winner-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#winner {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    background-color: #fff3e0;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ff5722;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.names-list {
+    display: flex;
+    flex-direction: column;
+    background: #ffb432;
+    border-radius: 10px;
+    width: 100%;
+    max-height: 66vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 5px;
+    padding-right: 15px;
+}
+
+.names-list::-webkit-scrollbar {
+    display: none;
+}
+
+.name-item {
+    background-color: #ffffff;
+    border: 1px solid hsl(0, 0%, 80%);
+    border-radius: 8px;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 40px;
+    width: 100%;
+}
+
+.name-item:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .col-lg-3,
+    .col-md-4,
+    .col-md-8,
+    .col-lg-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .names-list {
+        max-height: 200px;
+    }
+
+    .controls-wrapper {
+        margin-bottom: 20px;
+    }
+
+    .footer {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .footer p,
+    .footer small {
+        text-align: center;
+    }
+
+    .footer span {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    #canvas {
+        width: 90vw;
+        max-width: 300px;
+    }
+
+    .winner-container {
+        margin-top: 10px;
+    }
+
+    #winner {
+        font-size: 1.2rem;
+    }
+
+    .names-list {
+        max-height: 150px;
+    }
+
+    .header h1 {
+        font-size: 1.2rem;
+    }
+
+    .header img {
+        height: 40px;
+    }
+
+    .header span {
+        font-size: 0.8rem;
+    }
+}

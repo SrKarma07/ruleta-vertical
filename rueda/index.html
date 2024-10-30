@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta Aleatoria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header class="header d-flex align-items-center justify-content-between px-4">
+        <a href="#" onclick="location.reload();" class="d-flex align-items-center">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/013/760/641/small/ecuador-circle-flag-png.png" alt="Logo">
+        </a>
+        <h1 class="p-3 flex-grow-1 m-0">Ruleta Aleatoria</h1>
+        <span class="p-3">Ministerio de Educación</span>
+    </header>
+
+    <!-- Contenido principal -->
+    <div class="container-fluid p-3 flex-grow-1 contenedor-principal">
+        <div class="row gx-4">
+            <!-- Sidebar -->
+            <aside class="col-lg-3 col-md-4 col-sm-12">
+                <div class="sidebar">
+                    <h2 class="navbar-title">Escoger opción</h2>
+                    <button id="btnRangos" class="btn btn-option mt-3 fw-bold">Rangos</button>
+                    <button id="btnIntroduceNombres" class="btn btn-option mt-2 fw-bold">Introduce Nombres</button>
+                    <button id="btnAddList" class="btn btn-option mt-2 fw-bold">Añadir Lista</button>
+
+                    <h5 style="color: white;" class="mt-4">Número de ganadores</h5>
+                    <select id="numWinners" class="form-select mb-4">
+                        <option value="1">1 Ganador</option>
+                        <option value="2">2 Ganadores</option>
+                        <option value="3">3 Ganadores</option>
+                        <option value="4">4 Ganadores</option>
+                        <option value="5">5 Ganadores</option>
+                    </select>
+
+                    <!-- Controles que se despliegan -->
+                    <div class="controls-wrapper">
+                        <div id="ranges" class="control-section d-none">
+                            <button data-range="10" class="btn btn-secondary">1-10</button>
+                            <button data-range="20" class="btn btn-secondary">1-20</button>
+                            <button data-range="50" class="btn btn-secondary">1-50</button>
+                            <button data-range="100" class="btn btn-secondary">1-100</button>
+                            <input type="number" id="custom-range" class="inputRange form-control mt-2" placeholder="Inserte rango">
+                            <button id="add-custom-range" class="btnRange btn btn-primary mt-2">Agregar</button>
+                        </div>
+
+                        <div id="inputSection" class="control-section d-none">
+                            <input type="text" id="studentName" class="form-control w-100" placeholder="Ingrese un nombre">
+                            <button id="addStudentBtn" class="btn btn-primary mt-2">Agregar</button>
+                        </div>
+
+                        <div id="uploadSection" class="control-section d-none">
+                            <input type="file" id="fileInput" class="form-control" accept=".xlsx, .xls, .pdf">
+                            <button id="uploadBtn" class="btn btn-primary mt-2 w-50">Subir archivo</button>
+                            <button id="addFromFileBtn" class="btn btn-secondary mt-2 w-50 d-none">Agregar</button>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción fijos al final del sidebar -->
+                    <div class="btn-group-horizontal w-100 mt-4">
+                        <button id="clearWheelBtn" class="btn btn-danger">Limpiar Ruleta</button>
+                        <button id="newWheelBtn" class="btn btn-warning">Nueva Ruleta</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Ruleta y Controles -->
+            <main class="col-lg-6 col-md-8 col-sm-12 d-flex flex-column align-items-center">
+                <div class="ruleta-container mb-3">
+                    <div class="ruleta-wrapper">
+                        <canvas id="canvas"></canvas>
+                        <div id="spin-btn" class="btn-circle">Girar</div>
+                        <div id="triangle"></div>
+                    </div>
+                </div>
+                <div class="winner-container">
+                    <p id="winner">Ganador</p>
+                </div>
+            </main>
+
+            <!-- Contenedor de Elementos y Botones -->
+            <aside class="col-lg-3 col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center">
+                <div id="namesList" class="names-list mb-4 p-2"></div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto d-flex align-items-center justify-content-center py-3">
+        <p class="text-center m-0 d-flex align-items-center">
+            &copy;2024 Dirección Nacional de Tecnologías para la Educación | Desarrollado por: Jeremy David Torres
+        </p>
+        <span class="mx-3" style="border-left: 1px solid #d3d3d3; height: 50%"></span>
+
+        <small class="text-center d-flex align-items-center">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank"
+                rel="noopener noreferrer" class="text-light"
+                style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7) !important; display: flex; align-items: center;">
+                Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+                <span class="d-flex align-items-center ms-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-left: 5px;">
+                        <image href="https://mirrors.creativecommons.org/presskit/icons/cc.svg" width="24" height="24" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-left: 5px;">
+                        <image href="https://mirrors.creativecommons.org/presskit/icons/by.svg" width="24" height="24" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-left: 5px;">
+                        <image href="https://mirrors.creativecommons.org/presskit/icons/nc.svg" width="24" height="24" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-left: 5px;">
+                        <image href="https://mirrors.creativecommons.org/presskit/icons/sa.svg" width="24" height="24" />
+                    </svg>
+                </span>
+            </a>
+        </small>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
