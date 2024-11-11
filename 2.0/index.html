@@ -18,7 +18,7 @@
         <div id="roulette-selection" class="row justify-content-center">
             <h2 class="text-center mb-4">Seleccione el tipo de ruleta</h2>
             <div class="col-md-5 text-center">
-                <button id="selectCircularRoulette" class="roulette-option">
+                <button id="selectCircularRoulette" class="roulette-option btn btn-light">
                     <img src="https://media.tenor.com/neir67NC49wAAAAM/ruleta.gif" alt="Ruleta Circular" class="img-fluid">
                     <div class="hover-text">
                         <p>Ruleta Circular: Ideal para salones de clase o grupos de 45 individuos</p>
@@ -26,7 +26,7 @@
                 </button>
             </div>
             <div class="col-md-5 text-center">
-                <button id="selectVerticalRoulette" class="roulette-option">
+                <button id="selectVerticalRoulette" class="roulette-option btn btn-light">
                     <img src="https://media.tenor.com/dswm8olnV-8AAAAM/raccoon-with-wheel-spin-raccoon-spin-the-wheel.gif" alt="Ruleta Vertical" class="img-fluid">
                     <div class="hover-text">
                         <p>Ruleta Vertical: Ideal para sorteos a gran escala con más de 50 individuos hasta 10,000</p>
@@ -102,45 +102,63 @@
             <div id="roulette-container">
                 <!-- Ruleta circular -->
                 <div id="circular-roulette" class="ruleta-container mb-3 d-none">
-                    <div class="ruleta-wrapper">
-                        <canvas id="canvas"></canvas>
+                    <div class="ruleta-wrapper position-relative">
+                        <canvas id="canvas" width="400" height="400"></canvas>
                         <div id="triangle"></div>
                     </div>
                 </div>
 
                 <!-- Ruleta vertical -->
                 <div id="vertical-roulette" class="ruleta-container mb-3 d-none">
-                    <canvas id="ruletaCanvas" width="300" height="300"></canvas>
+                    <div class="ruleta-wrapper position-relative">
+                        <canvas id="ruletaCanvas" width="300" height="300"></canvas>
+                        <!-- Triángulos a los lados -->
+                        <div id="triangleLeft" class="triangle-side"></div>
+                        <div id="triangleRight" class="triangle-side"></div>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Capa oscura para el giro -->
-                <div id="spinOverlay">
-                    <div id="ruletaContainer">
-                        <!-- Ruleta ampliada -->
-                        <canvas id="ruletaCanvasBig" width="400" height="400"></canvas>
-                        <!-- Flechas indicando al ganador (para ruleta vertical) -->
-                        <div id="arrowLeft" class="arrow"></div>
-                        <div id="arrowRight" class="arrow"></div>
+            <!-- Capa oscura para el giro -->
+            <div id="spinOverlay">
+                <!-- Contenedor para Ruleta Circular -->
+                <div id="spinOverlayCircular" class="spin-overlay-section d-none">
+                    <div id="ruletaContainerCircular" class="ruleta-container">
                         <!-- Ruleta circular ampliada -->
-                        <canvas id="canvasBig"></canvas>
+                        <canvas id="canvasBig" width="600" height="600"></canvas>
+                        <!-- Indicador para Ruleta Circular -->
                         <div id="triangleBig"></div>
                     </div>
                 </div>
 
-                <!-- Capa oscura para el ganador -->
-                <div id="overlay">
-                    <!-- Imagen de ganador -->
-                    <img id="winnerGif" src="https://media.tenor.com/vP00ZuXznUUAAAAi/ganador-soyganador.gif" alt="Ganador">
-                    <div id="winner"></div>
-                    <button id="closeButton" class="hidden">&times;</button>
+                <!-- Contenedor para Ruleta Vertical -->
+                <div id="spinOverlayVertical" class="spin-overlay-section d-none">
+                    <div id="ruletaContainerVertical" class="ruleta-container-vertical">
+                        <!-- Ruleta vertical ampliada -->
+                        <canvas id="ruletaCanvasBig" width="600" height="600"></canvas>
+                        <!-- Triángulos a los lados -->
+                        <div id="triangleLeftBig" class="triangle-side"></div>
+                        <div id="triangleRightBig" class="triangle-side"></div>
+                    </div>
                 </div>
 
-                <div class="winner-container">
-                    <p id="winnerText">Ganador</p>
-                    <!-- Botones de acción -->
-                    <button id="newRaffleBtn" class="btn btn-warning mt-2">Nuevo Sorteo</button>
-                    <button id="spinAgainBtn" class="btn btn-primary mt-2">Girar de Nuevo</button>
-                </div>
+                <!-- Botón para iniciar el sorteo -->
+                <button id="startSpinBtn" class="btn btn-primary mt-3">Iniciar Sorteo</button>
+            </div>
+
+            <!-- Capa oscura para el ganador -->
+            <div id="overlay">
+                <!-- Imagen de ganador -->
+                <img id="winnerGif" src="https://media.tenor.com/vP00ZuXznUUAAAAi/ganador-soyganador.gif" alt="Ganador">
+                <div id="winner"></div>
+                <button id="closeButton" class="btn btn-danger mt-3">Cerrar</button>
+                <button id="newRaffleBtn" class="btn btn-warning mt-2">Nuevo Sorteo</button>
+            </div>
+
+            <div class="winner-container">
+                <p id="winnerText">Ganador</p>
+                <!-- Botones de acción -->
+                <button id="spinAgainBtn" class="btn btn-primary mt-2">Girar de Nuevo</button>
             </div>
         </div>
     </div>
@@ -170,12 +188,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
     <!-- Scripts personalizados -->
     <script src="./scripts/colores.js"></script>
-    <script src="./scripts/ingresarListado.js"></script>
-    <script src="./scripts/controles.js"></script>
+    <script src="./scripts/utilities.js"></script>
     <script src="./scripts/confetti.js"></script>
-    <script src="./scripts/animation.js"></script>
+    <script src="./scripts/dataManager.js"></script>
     <script src="./scripts/ruletaCircular.js"></script>
     <script src="./scripts/ruletaVertical.js"></script>
+    <script src="./scripts/ingresarListado.js"></script>
+    <script src="./scripts/controles.js"></script>
+    <script src="./scripts/animation.js"></script>
     <script src="./scripts/main.js"></script>
 </body>
 </html>
