@@ -1,5 +1,3 @@
-// ruletaVertical.js
-
 var ruletaVertical = (function() {
     let canvasVertical, ctxVertical;
     let canvasBigVertical, ctxBigVertical;
@@ -20,9 +18,9 @@ var ruletaVertical = (function() {
     let items = [];
     let colors = {};
     let overlay, spinOverlay, winnerDiv, closeButton;
-    let numWinnersSelect, winnerText;
+    let numWinnersSelect;
 
-    function init(canvas, canvasBig, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement, winnerTextElement) {
+    function init(canvas, canvasBig, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
         canvasVertical = canvas;
         ctxVertical = canvas.getContext("2d");
         canvasBigVertical = canvasBig;
@@ -34,7 +32,6 @@ var ruletaVertical = (function() {
         spinOverlay = spinOverlayElement;
         winnerDiv = winnerDivElement;
         closeButton = closeButtonElement;
-        winnerText = winnerTextElement;
 
         adjustCanvasSize();
         names = [...items];
@@ -43,6 +40,7 @@ var ruletaVertical = (function() {
             return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
         });
         draw(ctxVertical, canvasVertical, position);
+        draw(ctxBigVertical, canvasBigVertical, position);
         window.addEventListener('resize', adjustCanvasSize);
     }
 
@@ -132,7 +130,7 @@ var ruletaVertical = (function() {
         const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
         position -= extraRotations * itemHeight;
 
-        window.showSpinOverlay('vertical'); // Llamar a la función global definida en main.js
+        // Eliminada la llamada a window.showSpinOverlay
         animationFrame = requestAnimationFrame(function(timestamp) {
             animate(timestamp, initialSpeed);
         });

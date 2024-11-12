@@ -1,5 +1,3 @@
-// ruletaCircular.js
-
 var ruletaCircular = (function() {
     let canvasCircular, ctxCircular;
     let canvasBig, ctxBig;
@@ -17,9 +15,9 @@ var ruletaCircular = (function() {
     let items = [];
     let colors = {};
     let overlay, spinOverlay, winnerDiv, closeButton;
-    let numWinnersSelect, winnerText;
+    let numWinnersSelect;
 
-    function init(canvas, canvasBigElement, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement, winnerTextElement) {
+    function init(canvas, canvasBigElement, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
         canvasCircular = canvas;
         ctxCircular = canvas.getContext("2d");
         canvasBig = canvasBigElement;
@@ -31,7 +29,6 @@ var ruletaCircular = (function() {
         spinOverlay = spinOverlayElement;
         winnerDiv = winnerDivElement;
         closeButton = closeButtonElement;
-        winnerText = winnerTextElement;
 
         adjustCanvasSize();
         names = [...items];
@@ -40,6 +37,7 @@ var ruletaCircular = (function() {
             return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
         });
         draw(ctxCircular, canvasCircular, angle);
+        draw(ctxBig, canvasBig, angle);
         window.addEventListener('resize', adjustCanvasSize);
     }
 
@@ -129,7 +127,7 @@ var ruletaCircular = (function() {
         const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
         angle -= extraRotations * ((2 * Math.PI) / names.length);
 
-        window.showSpinOverlay('circular'); // Llamar a la función global definida en main.js
+        // Eliminada la llamada a window.showSpinOverlay
         animationFrame = requestAnimationFrame(animate);
     }
 

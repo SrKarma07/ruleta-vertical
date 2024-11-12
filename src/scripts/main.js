@@ -1,5 +1,4 @@
 // main.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Variables y elementos del DOM
     const rouletteSelection = document.getElementById('roulette-selection');
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinOverlay = document.getElementById('spinOverlay');
     const overlay = document.getElementById('overlay');
     const winnerDiv = document.getElementById('winner');
-    const winnerText = document.getElementById('winnerText');
     const closeButton = document.getElementById('closeButton');
 
     const newRaffleBtn = document.getElementById('newRaffleBtn');
@@ -21,13 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const numWinnersSelect = document.getElementById('numWinners');
 
-    const startSpinBtn = document.getElementById('startSpinBtn');
+    // Obtener ambos botones de inicio de sorteo
+    const startSpinBtnCircular = document.getElementById('startSpinBtnCircular');
+    const startSpinBtnVertical = document.getElementById('startSpinBtnVertical');
 
     // Variables
     let currentRoulette = ''; // 'circular' o 'vertical'
 
     // Inicializar
-    updateNamesList();
+    updateNamesList(); // Asegúrate de que esta función esté definida en tus scripts
 
     // Eventos de botones
     selectCircularRouletteBtn.addEventListener('click', () => selectRoulette('circular'));
@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
     spinAgainBtn.addEventListener('click', spinAgain);
     newRaffleBtn.addEventListener('click', resetApplication);
     closeButton.addEventListener('click', closeOverlay);
-    startSpinBtn.addEventListener('click', startSpin);
+    startSpinBtnCircular.addEventListener('click', startSpin);
+    startSpinBtnVertical.addEventListener('click', startSpin);
 
     // Función para seleccionar el tipo de ruleta
     function selectRoulette(type) {
@@ -68,8 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 overlay,
                 spinOverlay,
                 winnerDiv,
-                closeButton,
-                winnerText
+                closeButton
             );
         } else {
             document.getElementById('circular-roulette').classList.add('d-none');
@@ -84,10 +84,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 overlay,
                 spinOverlay,
                 winnerDiv,
-                closeButton,
-                winnerText
+                closeButton
             );
         }
+        showSpinOverlay(currentRoulette);
     }
 
     // Función para iniciar el sorteo desde el overlay
@@ -101,31 +101,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para girar de nuevo sin reiniciar todo
     function spinAgain() {
-        overlay.classList.remove('visible');
+        overlay.classList.add('d-none');
+        overlay.classList.remove('d-flex');
         closeButton.classList.add('hidden');
-        if (currentRoulette === 'circular') {
-            ruletaCircular.spin(parseInt(numWinnersSelect.value, 10));
-        } else if (currentRoulette === 'vertical') {
-            ruletaVertical.spin();
-        }
+        stopConfetti(); // Asegúrate de que esta función esté definida en tus scripts
+        showSpinOverlay(currentRoulette);
     }
 
     // Función para cerrar el overlay
     function closeOverlay() {
-        overlay.classList.remove('visible');
+        overlay.classList.add('d-none');
+        overlay.classList.remove('d-flex');
         closeButton.classList.add('hidden');
-        stopConfetti();
+        stopConfetti(); // Asegúrate de que esta función esté definida en tus scripts
     }
 
     // Función para mostrar el ganador
     function showWinner(winnerName) {
+        console.log(`Mostrando ganador: ${winnerName}`); // Para depuración
         winnerDiv.textContent = `Ganador: ${winnerName}`;
-        overlay.classList.add('visible');
-        spinOverlay.classList.remove('active');
+        overlay.classList.remove('d-none');
+        overlay.classList.add('d-flex'); // Añadir clase d-flex para mostrar el overlay
+        spinOverlay.classList.add('d-none');
 
         setTimeout(() => {
-            startConfetti(); // Iniciar el confetti después de hacer visible el overlay
-        }, 500); // Asegurarnos de que el overlay esté visible antes de empezar el confetti
+            startConfetti(); // Asegúrate de que esta función esté definida en tus scripts
+        }, 500);
 
         setTimeout(() => {
             closeButton.classList.remove('hidden');
@@ -134,34 +135,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para mostrar el overlay de giro
     function showSpinOverlay(type) {
-        overlay.classList.remove('visible');
-        closeButton.classList.add('hidden');
-        spinOverlay.classList.add('active'); // Activar el overlay
+        overlay.classList.add('d-none');
+        overlay.classList.remove('d-flex');
+        spinOverlay.classList.remove('d-none');
 
         if (type === 'circular') {
-            // Mostrar spinOverlayCircular y ocultar spinOverlayVertical
-            document.getElementById('spinOverlayCircular').classList.add('active');
-            document.getElementById('spinOverlayVertical').classList.remove('active');
-            // Mostrar canvasBig y ocultar ruletaCanvasBig
-            document.getElementById('canvasBig').style.display = 'block';
-            document.getElementById('ruletaCanvasBig').style.display = 'none';
-            // Mostrar triangleBig y ocultar triángulos laterales
-            document.getElementById('triangleBig').style.display = 'block';
-            document.querySelectorAll('.triangle-side').forEach(triangle => {
-                triangle.style.display = 'none';
-            });
+            document.getElementById('spinOverlayCircular').classList.remove('d-none');
+            document.getElementById('spinOverlayVertical').classList.add('d-none');
         } else if (type === 'vertical') {
-            // Mostrar spinOverlayVertical y ocultar spinOverlayCircular
-            document.getElementById('spinOverlayVertical').classList.add('active');
-            document.getElementById('spinOverlayCircular').classList.remove('active');
-            // Mostrar ruletaCanvasBig y ocultar canvasBig
-            document.getElementById('ruletaCanvasBig').style.display = 'block';
-            document.getElementById('canvasBig').style.display = 'none';
-            // Mostrar triángulos laterales y ocultar triangleBig
-            document.getElementById('triangleBig').style.display = 'none';
-            document.querySelectorAll('.triangle-side').forEach(triangle => {
-                triangle.style.display = 'block';
-            });
+            document.getElementById('spinOverlayVertical').classList.remove('d-none');
+            document.getElementById('spinOverlayCircular').classList.add('d-none');
         }
     }
 

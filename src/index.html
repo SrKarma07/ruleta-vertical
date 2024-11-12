@@ -8,8 +8,8 @@
     <!-- Estilos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./styles/style.css">
-    
 </head>
+
 <body class="d-flex flex-column min-vh-100">
     <!-- Contenido principal -->
     <div class="container-fluid p-3 flex-grow-1 contenedor-principal">
@@ -18,7 +18,8 @@
             <h2 class="text-center mb-4">Seleccione el tipo de ruleta</h2>
             <div class="col-md-5 text-center">
                 <button id="selectCircularRoulette" class="roulette-option btn btn-light">
-                    <img src="https://media.tenor.com/neir67NC49wAAAAM/ruleta.gif" alt="Ruleta Circular" class="img-fluid">
+                    <img src="https://media.tenor.com/neir67NC49wAAAAM/ruleta.gif" alt="Ruleta Circular"
+                        class="img-fluid">
                     <div class="hover-text">
                         <p>Ruleta Circular: Ideal para salones de clase o grupos de 45 individuos</p>
                     </div>
@@ -26,7 +27,8 @@
             </div>
             <div class="col-md-5 text-center">
                 <button id="selectVerticalRoulette" class="roulette-option btn btn-light">
-                    <img src="https://media.tenor.com/dswm8olnV-8AAAAM/raccoon-with-wheel-spin-raccoon-spin-the-wheel.gif" alt="Ruleta Vertical" class="img-fluid">
+                    <img src="https://media.tenor.com/dswm8olnV-8AAAAM/raccoon-with-wheel-spin-raccoon-spin-the-wheel.gif"
+                        alt="Ruleta Vertical" class="img-fluid">
                     <div class="hover-text">
                         <p>Ruleta Vertical: Ideal para sorteos a gran escala con más de 50 individuos hasta 10,000</p>
                     </div>
@@ -54,7 +56,8 @@
                         <!-- Controles -->
                         <div class="controls-wrapper">
                             <button id="btnRangos" class="btn btn-option mt-3 fw-bold">Rangos</button>
-                            <button id="btnIntroduceNombres" class="btn btn-option mt-2 fw-bold">Introduce Nombres</button>
+                            <button id="btnIntroduceNombres" class="btn btn-option mt-2 fw-bold">Introduce
+                                Nombres</button>
                             <button id="btnAddList" class="btn btn-option mt-2 fw-bold">Añadir Lista</button>
 
                             <!-- Secciones desplegables -->
@@ -63,12 +66,14 @@
                                 <button data-range="20" class="btn btn-secondary">1-20</button>
                                 <button data-range="50" class="btn btn-secondary">1-50</button>
                                 <button data-range="100" class="btn btn-secondary">1-100</button>
-                                <input type="number" id="custom-range" class="inputRange form-control mt-2" placeholder="Inserte rango">
+                                <input type="number" id="custom-range" class="inputRange form-control mt-2"
+                                    placeholder="Inserte rango">
                                 <button id="add-custom-range" class="btnRange btn btn-primary mt-2">Agregar</button>
                             </div>
 
                             <div id="inputSection" class="control-section d-none">
-                                <input type="text" id="studentName" class="form-control w-100" placeholder="Ingrese un nombre">
+                                <input type="text" id="studentName" class="form-control w-100"
+                                    placeholder="Ingrese un nombre">
                                 <button id="addStudentBtn" class="btn btn-primary mt-2">Agregar</button>
                             </div>
 
@@ -119,7 +124,7 @@
             </div>
 
             <!-- Capa oscura para el giro -->
-            <div id="spinOverlay">
+            <div id="spinOverlay" class="d-none">
                 <!-- Contenedor para Ruleta Circular -->
                 <div id="spinOverlayCircular" class="spin-overlay-section d-none">
                     <div id="ruletaContainerCircular" class="ruleta-container">
@@ -128,6 +133,8 @@
                         <!-- Indicador para Ruleta Circular -->
                         <div id="triangleBig"></div>
                     </div>
+                    <!-- Botón para iniciar el sorteo -->
+                    <button id="startSpinBtnCircular" class="btn btn-primary mt-3">Iniciar Sorteo</button>
                 </div>
 
                 <!-- Contenedor para Ruleta Vertical -->
@@ -139,25 +146,21 @@
                         <div id="triangleLeftBig" class="triangle-side"></div>
                         <div id="triangleRightBig" class="triangle-side"></div>
                     </div>
+                    <!-- Botón para iniciar el sorteo -->
+                    <button id="startSpinBtnVertical" class="btn btn-primary mt-3">Iniciar Sorteo</button>
                 </div>
-
-                <!-- Botón para iniciar el sorteo -->
-                <button id="startSpinBtn" class="btn btn-primary mt-3">Iniciar Sorteo</button>
             </div>
 
             <!-- Capa oscura para el ganador -->
-            <div id="overlay">
+            <div id="overlay" class="d-none">
                 <!-- Imagen de ganador -->
                 <img id="winnerGif" src="https://media.tenor.com/vP00ZuXznUUAAAAi/ganador-soyganador.gif" alt="Ganador">
                 <div id="winner"></div>
-                <button id="closeButton" class="btn btn-danger mt-3">X</button>
-                <button id="newRaffleBtn" class="btn btn-warning mt-2">Nuevo Sorteo</button>
-            </div>
-
-            <div class="winner-container">
-                <p id="winnerText">Ganador</p>
-                <!-- Botones de acción -->
-                <button id="spinAgainBtn" class="btn btn-primary mt-2">Girar de Nuevo</button>
+                <button id="closeButton" class="btn btn-danger mt-3 hidden">X</button>
+                <div class="winner-buttons">
+                    <button id="spinAgainBtn" class="btn btn-primary mt-2">Girar</button>
+                    <button id="newRaffleBtn" class="btn btn-warning mt-2">Nuevo Sorteo</button>
+                </div>
             </div>
         </div>
     </div>
@@ -174,9 +177,6 @@
                 rel="noopener noreferrer" class="text-light"
                 style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7) !important; display: flex; align-items: center;">
                 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-                <span class="d-flex align-items-center ms-2">
-                    <!-- Aquí puedes agregar los iconos de licencias si lo deseas -->
-                </span>
             </a>
         </small>
     </footer>
@@ -194,7 +194,6 @@
     <script src="./scripts/Vertical/ruletaVertical.js"></script>
     <script src="./scripts/configuraciones/ingresarListado.js"></script>
     <script src="./scripts/configuraciones/controles.js"></script>
-    <script src="./scripts/Vertical/animation.js"></script>
     <script src="./scripts/main.js"></script>
 </body>
 </html>
