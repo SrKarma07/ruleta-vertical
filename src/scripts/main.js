@@ -1,4 +1,3 @@
-// main.js
 document.addEventListener('DOMContentLoaded', function() {
     // Variables y elementos del DOM
     const rouletteSelection = document.getElementById('roulette-selection');
@@ -118,11 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para mostrar el ganador
     function showWinner(winnerName) {
-        console.log(`Mostrando ganador: ${winnerName}`); // Para depuración
-        winnerDiv.textContent = `Ganador: ${winnerName}`;
+        console.log("showWinner called with:", winnerName); // Depuración
+        winnerDiv.textContent = `${winnerName}`;
         overlay.classList.remove('d-none');
-        overlay.classList.add('d-flex'); // Añadir clase d-flex para mostrar el overlay
+        overlay.classList.add('d-flex');
         spinOverlay.classList.add('d-none');
+
+        // Mostrar las ruletas pequeñas cuando se muestra el overlay del ganador
+        showSmallRoulette();
 
         setTimeout(() => {
             startConfetti(); // Asegúrate de que esta función esté definida en tus scripts
@@ -137,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSpinOverlay(type) {
         overlay.classList.add('d-none');
         overlay.classList.remove('d-flex');
+        closeButton.classList.add('hidden');
         spinOverlay.classList.remove('d-none');
 
         if (type === 'circular') {
@@ -145,6 +148,27 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (type === 'vertical') {
             document.getElementById('spinOverlayVertical').classList.remove('d-none');
             document.getElementById('spinOverlayCircular').classList.add('d-none');
+        }
+
+        // Ocultar las ruletas pequeñas durante la animación de giro
+        hideSmallRoulette();
+    }
+
+    // Función para ocultar las ruletas pequeñas
+    function hideSmallRoulette() {
+        if (currentRoulette === 'circular') {
+            document.getElementById('circular-roulette').classList.add('d-none');
+        } else if (currentRoulette === 'vertical') {
+            document.getElementById('vertical-roulette').classList.add('d-none');
+        }
+    }
+
+    // Función para mostrar las ruletas pequeñas
+    function showSmallRoulette() {
+        if (currentRoulette === 'circular') {
+            document.getElementById('circular-roulette').classList.remove('d-none');
+        } else if (currentRoulette === 'vertical') {
+            document.getElementById('vertical-roulette').classList.remove('d-none');
         }
     }
 

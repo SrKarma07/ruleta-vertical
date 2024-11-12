@@ -73,7 +73,7 @@ var ruletaVertical = (function() {
 
     function draw(context, canvasElement, posY) {
         context.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        context.font = '20px Arial';
+        context.font = '2.5vh Arial';
         context.textAlign = 'center';
 
         if (names.length === 0) {
@@ -179,10 +179,10 @@ var ruletaVertical = (function() {
     }
 
     // Función para obtener el siguiente color (puedes personalizarla)
-    function getNextColor(index, total) {
-        const hue = index * (360 / total);
-        // Generar colores vibrantes usando HSL
-        return hslToRgb(hue, 70, 50);
+    function getNextColor(index, totalItems) {
+        const hue = (index / totalItems) * 360;
+        const { r, g, b } = hslToRgb(hue, 100, 50);
+        return { r, g, b };
     }
 
     // Función para convertir HSL a RGB
