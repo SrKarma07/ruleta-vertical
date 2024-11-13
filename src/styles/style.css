@@ -139,14 +139,17 @@ header {
     margin: 0 auto;
 }
 
-#canvas,
-#canvasBig {
+#canvas{
     width: 100%;
     height: 100%;
 }
 
-#triangle,
-#triangleBig {
+#canvasBig {
+    width: 300px;
+    height: 300px;
+}
+
+#triangle {
     position: absolute;
     top: -20px;
     left: 50%;
@@ -156,6 +159,28 @@ header {
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 20px solid #d32f2f;
+}
+
+/* Estilos para el triangulo de la ruleta circular */
+#triangleBig {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 10px); /* Ajustar la distancia según sea necesario */
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 20px solid #d32f2f; /* Color inicial */
+}
+
+#ruletaContainerCircular {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 /* Estilos para la ruleta vertical */

@@ -43,11 +43,12 @@ var ruletaCircular = (function() {
 
     function adjustCanvasSize() {
         const numItems = items.length;
-        const itemAngle = (2 * Math.PI) / numItems;
         const containerWidth = canvasCircular.parentElement.clientWidth;
         const containerHeight = canvasCircular.parentElement.clientHeight;
-        const newCanvasSize = Math.min(400, containerWidth, containerHeight); // Ajustar según sea necesario
-        const newCanvasBigSize = newCanvasSize * 1.5; // 1.5 veces más grande
+        const newCanvasSize = Math.min(400, containerWidth, containerHeight);
+
+        // Establecer un tamaño fijo para el canvas grande
+        const newCanvasBigSize = 550;
 
         // Ajustar tamaño del canvas circular
         canvasCircular.width = newCanvasSize;
@@ -102,15 +103,6 @@ var ruletaCircular = (function() {
             context.fillText(names[i], radius - 10, 10);
             context.restore();
         }
-
-        // Dibujar indicador (triángulo) en la parte superior
-        context.beginPath();
-        context.moveTo(centerX, centerY - radius - 20);
-        context.lineTo(centerX - 10, centerY - radius + 10);
-        context.lineTo(centerX + 10, centerY - radius + 10);
-        context.closePath();
-        context.fillStyle = '#FF0000';
-        context.fill();
     }
 
     function spin(numWinners = 1) {
@@ -127,7 +119,6 @@ var ruletaCircular = (function() {
         const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
         angle -= extraRotations * ((2 * Math.PI) / names.length);
 
-        // Eliminada la llamada a window.showSpinOverlay
         animationFrame = requestAnimationFrame(animate);
     }
 
@@ -147,7 +138,11 @@ var ruletaCircular = (function() {
         }
 
         draw(ctxCircular, canvasCircular, angle);
-        draw(ctxBig, canvasBig, angle); // Actualizar el canvas grande durante la animación
+        draw(ctxBig, canvasBig, angle);
+
+        // Actualizar el color de la flecha
+        updateTriangleColor();
+
         animationFrame = requestAnimationFrame(animate);
     }
 
@@ -170,12 +165,25 @@ var ruletaCircular = (function() {
         angle = -winnerIndices[0] * ((2 * Math.PI) / names.length);
 
         draw(ctxCircular, canvasCircular, angle);
-        draw(ctxBig, canvasBig, angle); // Dibujar el estado final en el canvas grande
+        draw(ctxBig, canvasBig, angle);
+
+        // Actualizar el color de la flecha
+        updateTriangleColor();
 
         // Mostrar los ganadores
         winnerIndices.forEach(index => {
             window.showWinner(names[index]);
         });
+    }
+
+    function updateTriangleColor() {
+        const totalAngle = 2 * Math.PI;
+        const normalizedAngle = (totalAngle - (angle % totalAngle)) % totalAngle;
+        const segmentAngle = totalAngle / names.length;
+        const adjustedAngle = (normalizedAngle + segmentAngle / 2) % totalAngle;
+        const segmentIndex = Math.floor(adjustedAngle / segmentAngle) % names.length;
+        const currentColor = colorsCircular[segmentIndex];
+        document.getElementById('triangleBig').style.borderLeftColor = currentColor;
     }
 
     // Función de easing (cúbica)
@@ -217,12 +225,6 @@ var ruletaCircular = (function() {
         }
 
         return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
-    }
-
-    // Función para ajustar la saturación del color (si es necesario)
-    function adjustColorSaturation(color, saturation) {
-        // Implementa la lógica para ajustar la saturación si lo deseas
-        return color; // Retorna el color sin cambios por defecto
     }
 
     // Exponer funciones públicas
