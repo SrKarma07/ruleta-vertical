@@ -1,5 +1,4 @@
 var ruletaCircular = (function() {
-    let canvasCircular, ctxCircular;
     let canvasBig, ctxBig;
 
     let names = [];
@@ -17,9 +16,7 @@ var ruletaCircular = (function() {
     let overlay, spinOverlay, winnerDiv, closeButton;
     let numWinnersSelect;
 
-    function init(canvas, canvasBigElement, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
-        canvasCircular = canvas;
-        ctxCircular = canvas.getContext("2d");
+    function init(canvasBigElement, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
         canvasBig = canvasBigElement;
         ctxBig = canvasBig.getContext('2d');
         items = itemsList;
@@ -36,36 +33,22 @@ var ruletaCircular = (function() {
             const colorObj = getNextColor(index, names.length);
             return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
         });
-        draw(ctxCircular, canvasCircular, angle);
         draw(ctxBig, canvasBig, angle);
         window.addEventListener('resize', adjustCanvasSize);
     }
 
     function adjustCanvasSize() {
-        const numItems = items.length;
-        const containerWidth = canvasCircular.parentElement.clientWidth;
-        const containerHeight = canvasCircular.parentElement.clientHeight;
-        const newCanvasSize = Math.min(400, containerWidth, containerHeight);
-
-        // Establecer un tamaño fijo para el canvas grande
         const newCanvasBigSize = 550;
-
-        // Ajustar tamaño del canvas circular
-        canvasCircular.width = newCanvasSize;
-        canvasCircular.height = newCanvasSize;
 
         // Ajustar tamaño del canvas grande
         canvasBig.width = newCanvasBigSize;
         canvasBig.height = newCanvasBigSize;
 
         // Actualizar estilos de tamaño
-        canvasCircular.style.width = newCanvasSize + 'px';
-        canvasCircular.style.height = newCanvasSize + 'px';
         canvasBig.style.width = newCanvasBigSize + 'px';
         canvasBig.style.height = newCanvasBigSize + 'px';
 
-        // Redibujar en ambos canvas
-        draw(ctxCircular, canvasCircular, angle);
+        // Redibujar el canvas grande
         draw(ctxBig, canvasBig, angle);
     }
 
@@ -141,10 +124,9 @@ var ruletaCircular = (function() {
             return;
         }
 
-        draw(ctxCircular, canvasCircular, angle);
         draw(ctxBig, canvasBig, angle);
 
-        // Actualizar el color de la flecha
+        // Actualizar el color del indicador
         updateIndicatorColor();
 
         animationFrame = requestAnimationFrame(animate);
@@ -168,10 +150,9 @@ var ruletaCircular = (function() {
         // Alinear el ángulo para que el ganador quede alineado con el indicador
         angle = -winnerIndices[0] * ((2 * Math.PI) / names.length);
 
-        draw(ctxCircular, canvasCircular, angle);
         draw(ctxBig, canvasBig, angle);
 
-        // Actualizar el color de la flecha
+        // Actualizar el color del indicador
         updateIndicatorColor();
 
         // Mostrar los ganadores
@@ -187,18 +168,13 @@ var ruletaCircular = (function() {
         const adjustedAngle = (normalizedAngle + segmentAngle / 2) % totalAngle;
         const segmentIndex = Math.floor(adjustedAngle / segmentAngle) % names.length;
         const currentColor = colorsCircular[segmentIndex];
-    
+
         // Actualizar el color del triángulo
         document.getElementById('triangleBig').style.borderRightColor = currentColor;
-    
-        // Si lo anterior no funciona, utiliza esta alternativa:
-        // document.getElementById('triangleBig').style.borderRight = `50px solid ${currentColor}`;
-    
+
         // Actualizar el color del rectángulo
         document.getElementById('rectangleBig').style.backgroundColor = currentColor;
     }
-    
-    
 
     // Función de easing (cúbica)
     function easeOutCubic(t) {

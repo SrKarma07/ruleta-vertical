@@ -10,11 +10,6 @@ body {
     padding-top: 20px;
 }
 
-/* Ocultar el header */
-header {
-    display: none;
-}
-
 /* Estilos para la selección de ruleta */
 .roulette-option {
     position: relative;
@@ -127,38 +122,54 @@ header {
     background-color: #7b1fa2;
 }
 
-/* Estilos para la ruleta y overlays */
-.ruleta-container {
-    position: relative;
+/* Estilos para el overlay de giro */
+#spinOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(128, 128, 128, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    flex-direction: column;
 }
 
-.ruleta-wrapper {
+.spin-overlay-section {
     position: relative;
-    width: 400px;
-    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos para el canvas grande */
+#canvasBig,
+#ruletaCanvasBig {
+    width: 550px;
+    height: 550px;
+}
+
+#ruletaContainerCircular {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
     margin: 0 auto;
 }
 
-#canvas{
-    width: 100%;
-    height: 100%;
-}
-
-#canvasBig {
-    width: 300px;
-    height: 300px;
-}
-
-#triangle {
+/* Contenedor del indicador */
+#indicator {
     position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 20px solid #d32f2f;
+    top: 50%;
+    left: calc(100% + 30px); /* Ajusta este valor según sea necesario */
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: row; /* Asegurarse de que esté en 'row' */
+    align-items: center;
 }
 
 /* Triángulo apuntando hacia la izquierda */
@@ -181,95 +192,37 @@ header {
     background-color: #d32f2f; /* Color inicial */
 }
 
-#indicator {
-    position: absolute;
-    top: 52%;
-    left: calc(100% + 10px); /* Ajusta este valor según sea necesario */
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: row; /* Asegurarse de que esté en 'row' */
-    align-items: center;
-}
 
-#ruletaContainerCircular {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    margin: 0 auto;
-}
-
-/* Estilos para la ruleta vertical */
 .ruleta-container-vertical {
+    position: relative; /* Aseguramos que los elementos dentro se posicionen relativamente */
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
-
+/* Triángulos para la ruleta vertical */
 .triangle-side {
+    position: absolute;
     width: 0;
     height: 0;
     border-top: 30px solid transparent;
     border-bottom: 30px solid transparent;
 }
 
-#triangleLeft,
+/* Triángulo que ahora apunta hacia la derecha */
 #triangleLeftBig {
-    left: -40px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-left: 20px solid #d32f2f; /* Cambiado a borde izquierdo */
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-}
-
-#triangleRight,
-#triangleRightBig {
-    right: -40px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-right: 20px solid #d32f2f; /* Cambiado a borde derecho */
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-}
-
-/* Estilos para el overlay de giro */
-#spinOverlay {
-    position: fixed;
-    top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(128, 128, 128, 0.8);
-    display: flex; /* Solo se muestra cuando no tiene la clase d-none */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    flex-direction: column;
+    transform: translateY(-50%);
+    border-left: 50px solid #d32f2f; /* Cambiado de border-right a border-left */
 }
 
-.spin-overlay-section {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+/* Triángulo que ahora apunta hacia la izquierda */
+#triangleRightBig {
+    right: 0;
+    transform: translateY(50%);
+    border-right: 50px solid #d32f2f; /* Cambiado de border-left a border-right */
 }
 
-#ruletaCanvasBig {
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    z-index: 1001;
-    text-align: center;
-}
-
-#ruletaCanvasBig {
-    border-radius: 0;
-}
 
 /* Botón de inicio de sorteo en el overlay */
 .spin-overlay-section .btn {
@@ -296,6 +249,11 @@ header {
     justify-content: center;
     z-index: 10000;
     align-items: center;
+    display: none;
+}
+
+#overlay.d-flex {
+    display: flex;
 }
 
 #winnerGif {
@@ -348,23 +306,4 @@ header {
     background-color: #ce93d8;
     color: white;
     padding: 10px 20px;
-}
-
-/* Ajustes adicionales para las ruletas pequeñas */
-#circular-roulette,
-#vertical-roulette {
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-/* Opcional: agregar opacidad para una transición suave */
-#circular-roulette.d-none,
-#vertical-roulette.d-none {
-    opacity: 0;
-    visibility: hidden;
-}
-
-#circular-roulette:not(.d-none),
-#vertical-roulette:not(.d-none) {
-    opacity: 1;
-    visibility: visible;
 }

@@ -1,6 +1,6 @@
 var ruletaVertical = (function() {
-    let canvasVertical, ctxVertical;
     let canvasBigVertical, ctxBigVertical;
+    let triangleLeftBig, triangleRightBig;
 
     let names = [];
     let colorsVertical = [];
@@ -11,7 +11,6 @@ var ruletaVertical = (function() {
     let initialSpeed = 0;
     let decelerationDuration = 2000;
     let itemHeight = 60;
-    const maxCanvasHeight = 300;
     const maxCanvasBigHeight = 400;
     let animationFrame = null;
 
@@ -20,9 +19,7 @@ var ruletaVertical = (function() {
     let overlay, spinOverlay, winnerDiv, closeButton;
     let numWinnersSelect;
 
-    function init(canvas, canvasBig, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
-        canvasVertical = canvas;
-        ctxVertical = canvas.getContext("2d");
+    function init(canvasBig, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
         canvasBigVertical = canvasBig;
         ctxBigVertical = canvasBig.getContext('2d');
         items = itemsList;
@@ -33,36 +30,41 @@ var ruletaVertical = (function() {
         winnerDiv = winnerDivElement;
         closeButton = closeButtonElement;
 
+        // Obtener referencias a los triángulos
+        triangleLeftBig = document.getElementById('triangleLeftBig');
+        triangleRightBig = document.getElementById('triangleRightBig');
+
         adjustCanvasSize();
         names = [...items];
         colorsVertical = names.map((_, index) => {
             const colorObj = getNextColor(index, names.length);
             return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
         });
-        draw(ctxVertical, canvasVertical, position);
         draw(ctxBigVertical, canvasBigVertical, position);
         window.addEventListener('resize', adjustCanvasSize);
     }
 
     function adjustCanvasSize() {
         const totalItemsHeight = items.length * itemHeight;
-        const newCanvasHeight = Math.min(totalItemsHeight, maxCanvasHeight);
         const newCanvasBigHeight = Math.min(totalItemsHeight, maxCanvasBigHeight);
 
-        canvasVertical.height = newCanvasHeight;
+        canvasBigVertical.width = 400; // Aseguramos un ancho fijo
         canvasBigVertical.height = newCanvasBigHeight;
-
-        canvasVertical.style.height = newCanvasHeight + 'px';
+        canvasBigVertical.style.width = '400px';
         canvasBigVertical.style.height = newCanvasBigHeight + 'px';
 
+        // Centrar los triángulos verticalmente dentro del contenedor
+        triangleLeftBig.style.top = '52%';
+        triangleRightBig.style.top = '37%';
+
+
         updatePosition();
-        draw(ctxVertical, canvasVertical, position);
         draw(ctxBigVertical, canvasBigVertical, position);
     }
 
     function updatePosition() {
         const totalItemsHeight = items.length * itemHeight;
-        const canvasHeight = canvasVertical.height;
+        const canvasHeight = canvasBigVertical.height;
 
         if (totalItemsHeight > canvasHeight) {
             position -= itemHeight;
@@ -130,7 +132,6 @@ var ruletaVertical = (function() {
         const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
         position -= extraRotations * itemHeight;
 
-        // Eliminada la llamada a window.showSpinOverlay
         animationFrame = requestAnimationFrame(function(timestamp) {
             animate(timestamp, initialSpeed);
         });
@@ -151,8 +152,9 @@ var ruletaVertical = (function() {
             return;
         }
 
-        draw(ctxVertical, canvasVertical, position);
-        draw(ctxBigVertical, canvasBigVertical, position); // Actualizar el canvas grande durante la animación
+        draw(ctxBigVertical, canvasBigVertical, position);
+        updateIndicatorColor(); // Actualizar el color de los triángulos
+
         animationFrame = requestAnimationFrame(function(timestamp) {
             animate(timestamp, speed);
         });
@@ -166,11 +168,23 @@ var ruletaVertical = (function() {
         if (winnerIndex < 0) winnerIndex += names.length;
 
         position = -((winnerIndex * itemHeight) - canvasBigVertical.height / 2 + itemHeight / 2);
-        draw(ctxVertical, canvasVertical, position);
-        draw(ctxBigVertical, canvasBigVertical, position); // Dibujar el estado final en el canvas grande
+        draw(ctxBigVertical, canvasBigVertical, position);
+
+        updateIndicatorColor(); // Actualizar el color de los triángulos
 
         // Mostrar el ganador
         window.showWinner(names[winnerIndex]);
+    }
+
+    function updateIndicatorColor() {
+        const totalItemsHeight = names.length * itemHeight;
+        const normalizedPosition = (position % totalItemsHeight + totalItemsHeight) % totalItemsHeight;
+        const index = Math.floor((normalizedPosition + canvasBigVertical.height / 2) / itemHeight) % names.length;
+        const currentColor = colorsVertical[index];
+
+        // Actualizar el color de los triángulos
+        triangleLeftBig.style.borderRightColor = currentColor;
+        triangleRightBig.style.borderLeftColor = currentColor;
     }
 
     // Función de easing (cúbica)
@@ -178,7 +192,7 @@ var ruletaVertical = (function() {
         return 1 - Math.pow(1 - t, 3);
     }
 
-    // Función para obtener el siguiente color (puedes personalizarla)
+    // Función para obtener el siguiente color
     function getNextColor(index, totalItems) {
         const hue = (index / totalItems) * 360;
         const { r, g, b } = hslToRgb(hue, 100, 50);
@@ -196,13 +210,13 @@ var ruletaVertical = (function() {
             r = g = b = l; // Tono gris
         } else {
             const hue2rgb = function(p, q, t) {
-                if(t < 0) t += 1;
-                if(t > 1) t -= 1;
-                if(t < 1/6) return p + (q - p) * 6 * t;
-                if(t < 1/2) return q;
-                if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
                 return p;
-            }
+            };
 
             const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
             const p = 2 * l - q;
