@@ -113,7 +113,11 @@ var ruletaCircular = (function() {
         isAnimating = true;
         startTime = null;
         totalDuration = 5000 + Math.random() * 2000;
-        initialAngularSpeed = 0.2; // Velocidad angular inicial en radianes por frame
+
+        // Establecer la duración de desaceleración al 70% del tiempo total
+        decelerationDuration = totalDuration * 0.7;
+
+        initialAngularSpeed = 0.5; // Velocidad angular inicial en radianes por frame
 
         // Calcular giros extra para mayor aleatoriedad
         const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
@@ -141,7 +145,7 @@ var ruletaCircular = (function() {
         draw(ctxBig, canvasBig, angle);
 
         // Actualizar el color de la flecha
-        updateTriangleColor();
+        updateIndicatorColor();
 
         animationFrame = requestAnimationFrame(animate);
     }
@@ -168,7 +172,7 @@ var ruletaCircular = (function() {
         draw(ctxBig, canvasBig, angle);
 
         // Actualizar el color de la flecha
-        updateTriangleColor();
+        updateIndicatorColor();
 
         // Mostrar los ganadores
         winnerIndices.forEach(index => {
@@ -176,15 +180,25 @@ var ruletaCircular = (function() {
         });
     }
 
-    function updateTriangleColor() {
+    function updateIndicatorColor() {
         const totalAngle = 2 * Math.PI;
         const normalizedAngle = (totalAngle - (angle % totalAngle)) % totalAngle;
         const segmentAngle = totalAngle / names.length;
         const adjustedAngle = (normalizedAngle + segmentAngle / 2) % totalAngle;
         const segmentIndex = Math.floor(adjustedAngle / segmentAngle) % names.length;
         const currentColor = colorsCircular[segmentIndex];
-        document.getElementById('triangleBig').style.borderLeftColor = currentColor;
+    
+        // Actualizar el color del triángulo
+        document.getElementById('triangleBig').style.borderRightColor = currentColor;
+    
+        // Si lo anterior no funciona, utiliza esta alternativa:
+        // document.getElementById('triangleBig').style.borderRight = `50px solid ${currentColor}`;
+    
+        // Actualizar el color del rectángulo
+        document.getElementById('rectangleBig').style.backgroundColor = currentColor;
     }
+    
+    
 
     // Función de easing (cúbica)
     function easeOutCubic(t) {

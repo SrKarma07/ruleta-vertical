@@ -161,17 +161,34 @@ header {
     border-bottom: 20px solid #d32f2f;
 }
 
-/* Estilos para el triangulo de la ruleta circular */
+/* Triángulo apuntando hacia la izquierda */
 #triangleBig {
-    position: absolute;
-    top: 50%;
-    left: calc(100% + 10px); /* Ajustar la distancia según sea necesario */
-    transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-left: 20px solid #d32f2f; /* Color inicial */
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+
+    /* Definimos las propiedades individualmente */
+    border-right-width: 50px;
+    border-right-style: solid;
+    border-right-color: #d32f2f; /* Color inicial transparente */
+}
+
+/* Rectángulo */
+#rectangleBig {
+    width: 60px;
+    height: 20px;
+    background-color: #d32f2f; /* Color inicial */
+}
+
+#indicator {
+    position: absolute;
+    top: 52%;
+    left: calc(100% + 10px); /* Ajusta este valor según sea necesario */
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: row; /* Asegurarse de que esté en 'row' */
+    align-items: center;
 }
 
 #ruletaContainerCircular {
