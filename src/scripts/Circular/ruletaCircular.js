@@ -1,6 +1,5 @@
 var ruletaCircular = (function() {
     let canvasBig, ctxBig;
-
     let names = [];
     let colorsCircular = [];
     let angle = 0; // Ángulo actual de rotación en radianes
@@ -27,39 +26,49 @@ var ruletaCircular = (function() {
         winnerDiv = winnerDivElement;
         closeButton = closeButtonElement;
 
-        adjustCanvasSize();
         names = [...items];
         colorsCircular = names.map((_, index) => {
             const colorObj = getNextColor(index, names.length);
             return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
         });
-        draw(ctxBig, canvasBig, angle);
+
+        // Ajustar el tamaño después de un pequeño retraso para asegurar que el canvas esté visible
+        setTimeout(() => {
+            adjustCanvasSize();
+        }, 100);
+
         window.addEventListener('resize', adjustCanvasSize);
     }
 
     function adjustCanvasSize() {
-        const newCanvasBigSize = 550;
+        const parent = canvasBig.parentElement; // Parent is .roulette-wrapper
+        const size = parent.offsetWidth; // Since aspect ratio is 1:1, width and height are the same
 
-        // Ajustar tamaño del canvas grande
-        canvasBig.width = newCanvasBigSize;
-        canvasBig.height = newCanvasBigSize;
+        if (size === 0) return; // Evitar división por cero
 
-        // Actualizar estilos de tamaño
-        canvasBig.style.width = newCanvasBigSize + 'px';
-        canvasBig.style.height = newCanvasBigSize + 'px';
+        canvasBig.width = size * window.devicePixelRatio;
+        canvasBig.height = size * window.devicePixelRatio;
 
-        // Redibujar el canvas grande
+        canvasBig.style.width = size + 'px';
+        canvasBig.style.height = size + 'px';
+
+        ctxBig.setTransform(1, 0, 0, 1, 0, 0); // Reset any scaling
+        ctxBig.scale(window.devicePixelRatio, window.devicePixelRatio);
+
         draw(ctxBig, canvasBig, angle);
     }
 
     function draw(context, canvasElement, currentAngle) {
         const numItems = names.length;
-        const radius = canvasElement.width / 2 - 10; // Margen de 10px
-        const centerX = canvasElement.width / 2;
-        const centerY = canvasElement.height / 2;
+        const radius = canvasElement.width / (2 * window.devicePixelRatio) - 10; // Margen de 10px
+        const centerX = canvasElement.width / (2 * window.devicePixelRatio);
+        const centerY = canvasElement.height / (2 * window.devicePixelRatio);
         const itemAngle = (2 * Math.PI) / numItems;
 
         context.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+        // Evitar radio negativo
+        if (radius <= 0) return;
 
         // Dibujar cada segmento
         for (let i = 0; i < numItems; i++) {

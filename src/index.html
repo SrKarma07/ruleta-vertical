@@ -124,31 +124,32 @@
             <!-- Contenedor para Ruleta Circular -->
             <div id="spinOverlayCircular" class="spin-overlay-section d-none">
                 <div id="ruletaContainerCircular" class="ruleta-container">
-                    <!-- Ruleta circular ampliada -->
-                    <canvas id="canvasBig"></canvas>
-                    <!-- Indicador para Ruleta Circular -->
-                    <div id="indicator">
-                        <div id="triangleBig"></div>
-                        <div id="rectangleBig"></div>
-                        
+                    <!-- Envolver canvas y flecha en un contenedor -->
+                    <div class="roulette-wrapper">
+                        <canvas id="canvasBig"></canvas>
+                        <!-- Indicador para Ruleta Circular -->
+                        <div id="indicator">
+                            <div id="rectangleBig"></div>
+                            <div id="triangleBig"></div>
+                        </div>
                     </div>
+                    <!-- Botón para iniciar el sorteo -->
+                    <button id="startSpinBtnCircular" class="btn btn-primary mt-3">Iniciar Sorteo</button>
                 </div>
-                <!-- Botón para iniciar el sorteo -->
-                <button id="startSpinBtnCircular" class="btn btn-primary mt-3">Iniciar Sorteo</button>
             </div>
 
             <!-- Contenedor para Ruleta Vertical -->
             <div id="spinOverlayVertical" class="spin-overlay-section d-none">
                 <div id="ruletaContainerVertical" class="ruleta-container-vertical">
-                    <!-- Triángulo izquierdo -->
-                    <div id="triangleLeftBig" class="triangle-side"></div>
-                    <!-- Ruleta vertical ampliada -->
-                    <canvas id="ruletaCanvasBig"></canvas>
-                    <!-- Triángulo derecho -->
-                    <div id="triangleRightBig" class="triangle-side"></div>
+                    <!-- Envolver canvas y triángulos en un contenedor -->
+                    <div class="roulette-wrapper-vertical">
+                        <div id="triangleLeftBig" class="triangle-side"></div>
+                        <canvas id="ruletaCanvasBig"></canvas>
+                        <div id="triangleRightBig" class="triangle-side"></div>
+                    </div>
+                    <!-- Botón para iniciar el sorteo -->
+                    <button id="startSpinBtnVertical" class="btn btn-primary mt-3">Iniciar Sorteo</button>
                 </div>
-                <!-- Botón para iniciar el sorteo -->
-                <button id="startSpinBtnVertical" class="btn btn-primary mt-3">Iniciar Sorteo</button>
             </div>
         </div>
 

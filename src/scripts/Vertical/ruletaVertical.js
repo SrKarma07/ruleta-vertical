@@ -11,7 +11,6 @@ var ruletaVertical = (function() {
     let initialSpeed = 0;
     let decelerationDuration = 2000;
     let itemHeight = 60;
-    const maxCanvasBigHeight = 400;
     let animationFrame = null;
 
     let items = [];
@@ -34,29 +33,35 @@ var ruletaVertical = (function() {
         triangleLeftBig = document.getElementById('triangleLeftBig');
         triangleRightBig = document.getElementById('triangleRightBig');
 
-        adjustCanvasSize();
         names = [...items];
         colorsVertical = names.map((_, index) => {
             const colorObj = getNextColor(index, names.length);
             return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
         });
-        draw(ctxBigVertical, canvasBigVertical, position);
+
+        // Ajustar el tamaño después de un pequeño retraso para asegurar que el canvas esté visible
+        setTimeout(() => {
+            adjustCanvasSize();
+        }, 100);
+
         window.addEventListener('resize', adjustCanvasSize);
     }
 
     function adjustCanvasSize() {
-        const totalItemsHeight = items.length * itemHeight;
-        const newCanvasBigHeight = Math.min(totalItemsHeight, maxCanvasBigHeight);
+        const parent = canvasBigVertical.parentElement; // Parent is .roulette-wrapper-vertical
+        const width = parent.offsetWidth;
+        const height = parent.offsetHeight;
 
-        canvasBigVertical.width = 400; // Aseguramos un ancho fijo
-        canvasBigVertical.height = newCanvasBigHeight;
-        canvasBigVertical.style.width = '400px';
-        canvasBigVertical.style.height = newCanvasBigHeight + 'px';
+        if (width === 0 || height === 0) return; // Evitar división por cero
 
-        // Centrar los triángulos verticalmente dentro del contenedor
-        triangleLeftBig.style.top = '52%';
-        triangleRightBig.style.top = '37%';
+        canvasBigVertical.width = width * window.devicePixelRatio;
+        canvasBigVertical.height = height * window.devicePixelRatio;
 
+        canvasBigVertical.style.width = width + 'px';
+        canvasBigVertical.style.height = height + 'px';
+
+        ctxBigVertical.setTransform(1, 0, 0, 1, 0, 0); // Reset any scaling
+        ctxBigVertical.scale(window.devicePixelRatio, window.devicePixelRatio);
 
         updatePosition();
         draw(ctxBigVertical, canvasBigVertical, position);
@@ -64,7 +69,7 @@ var ruletaVertical = (function() {
 
     function updatePosition() {
         const totalItemsHeight = items.length * itemHeight;
-        const canvasHeight = canvasBigVertical.height;
+        const canvasHeight = canvasBigVertical.height / window.devicePixelRatio;
 
         if (totalItemsHeight > canvasHeight) {
             position -= itemHeight;
@@ -93,27 +98,27 @@ var ruletaVertical = (function() {
             while (yPosition + itemHeight < 0) {
                 yPosition += totalHeight;
             }
-            while (yPosition > canvasElement.height) {
+            while (yPosition > canvasElement.height / window.devicePixelRatio) {
                 yPosition -= totalHeight;
             }
 
-            const centerY = canvasElement.height / 2;
+            const centerY = canvasElement.height / (2 * window.devicePixelRatio);
             const distanceFromCenter = Math.abs(yPosition + itemHeight / 2 - centerY);
-            const maxDistance = canvasElement.height / 2;
+            const maxDistance = canvasElement.height / (2 * window.devicePixelRatio);
 
             let opacity = 1 - (distanceFromCenter / maxDistance);
             opacity = Math.max(0, Math.min(1, opacity));
 
-            let saturation = opacity * 100;
+            // let saturation = opacity * 100; // No se usa
 
-            let color = adjustColorSaturation(colorsVertical[i], saturation);
+            let color = colorsVertical[i]; // Puedes ajustar la saturación si lo deseas
 
             context.fillStyle = color;
             context.globalAlpha = opacity;
-            context.fillRect(50, yPosition, canvasElement.width - 100, itemHeight - 10);
+            context.fillRect(50, yPosition, (canvasElement.width / window.devicePixelRatio) - 100, itemHeight - 10);
 
             context.fillStyle = '#000';
-            context.fillText(names[i], canvasElement.width / 2, yPosition + itemHeight / 2 + 5);
+            context.fillText(names[i], (canvasElement.width / window.devicePixelRatio) / 2, yPosition + itemHeight / 2 + 5);
 
             context.globalAlpha = 1;
         }
@@ -164,10 +169,10 @@ var ruletaVertical = (function() {
         isAnimating = false;
 
         const totalHeight = names.length * itemHeight;
-        let winnerIndex = Math.floor((-position + canvasBigVertical.height / 2) / itemHeight) % names.length;
+        let winnerIndex = Math.floor((-position + (canvasBigVertical.height / window.devicePixelRatio) / 2) / itemHeight) % names.length;
         if (winnerIndex < 0) winnerIndex += names.length;
 
-        position = -((winnerIndex * itemHeight) - canvasBigVertical.height / 2 + itemHeight / 2);
+        position = -((winnerIndex * itemHeight) - (canvasBigVertical.height / window.devicePixelRatio) / 2 + itemHeight / 2);
         draw(ctxBigVertical, canvasBigVertical, position);
 
         updateIndicatorColor(); // Actualizar el color de los triángulos
@@ -178,8 +183,9 @@ var ruletaVertical = (function() {
 
     function updateIndicatorColor() {
         const totalItemsHeight = names.length * itemHeight;
+        const canvasHeight = canvasBigVertical.height / window.devicePixelRatio;
         const normalizedPosition = (position % totalItemsHeight + totalItemsHeight) % totalItemsHeight;
-        const index = Math.floor((normalizedPosition + canvasBigVertical.height / 2) / itemHeight) % names.length;
+        const index = Math.floor((normalizedPosition + canvasHeight / 2) / itemHeight) % names.length;
         const currentColor = colorsVertical[index];
 
         // Actualizar el color de los triángulos
@@ -226,12 +232,6 @@ var ruletaVertical = (function() {
         }
 
         return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
-    }
-
-    // Función para ajustar la saturación del color (si es necesario)
-    function adjustColorSaturation(color, saturation) {
-        // Implementa la lógica para ajustar la saturación si lo deseas
-        return color; // Retorna el color sin cambios por defecto
     }
 
     // Exponer funciones públicas

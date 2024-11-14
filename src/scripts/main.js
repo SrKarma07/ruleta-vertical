@@ -1,5 +1,3 @@
-// main.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Variables y elementos del DOM
     const rouletteConfiguration = document.getElementById('roulette-configuration');
@@ -41,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         rouletteConfiguration.classList.add('d-none');
 
+        // Mostrar el overlay de la ruleta antes de inicializar
+        showSpinOverlay(window.currentRoulette);
+
         if (window.currentRoulette === 'circular') {
             ruletaCircular.init(
                 document.getElementById('canvasBig'),
@@ -64,7 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeButton
             );
         }
-        showSpinOverlay(window.currentRoulette);
     }
 
     // Función para iniciar el sorteo desde el overlay

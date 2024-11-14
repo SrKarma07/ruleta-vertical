@@ -98,86 +98,91 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
-/* Estilos para el canvas grande */
-#canvasBig,
-#ruletaCanvasBig {
-    width: 550px;
-    height: 550px;
-}
-
-#ruletaContainerCircular {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
+/* Contenedor de la ruleta circular*/
+.ruleta-container, .ruleta-container-vertical {
+    width: 100%;
+    max-width: 600px; /* Ajusta el máximo ancho según sea necesario */
     margin: 0 auto;
 }
 
-/* Contenedor del indicador */
+.roulette-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* Mantener aspecto cuadrado */
+}
+
+.roulette-wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Ruleta Vertical */
+.roulette-wrapper-vertical {
+    position: relative;
+    width: 100%;
+    height: 60vh; /* Puedes ajustar este valor */
+}
+
+.roulette-wrapper-vertical canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Indicador para Ruleta Circular */
 #indicator {
     position: absolute;
     top: 50%;
-    left: calc(100% + 30px); /* Ajusta este valor según sea necesario */
-    transform: translateY(-50%);
+    left: 0;
+    transform: translate(-100%, -50%); /* Mover fuera del canvas a la izquierda */
     display: flex;
-    flex-direction: row; /* Asegurarse de que esté en 'row' */
+    flex-direction: row;
     align-items: center;
 }
 
-/* Triángulo apuntando hacia la izquierda */
 #triangleBig {
     width: 0;
     height: 0;
-    border-top: 30px solid transparent;
-    border-bottom: 30px solid transparent;
-
-    /* Definimos las propiedades individualmente */
-    border-right-width: 50px;
-    border-right-style: solid;
-    border-right-color: #d32f2f; /* Color inicial transparente */
+    border-top: 3vh solid transparent;
+    border-bottom: 3vh solid transparent;
+    border-right: 5vh solid #d32f2f;
 }
 
-/* Rectángulo */
 #rectangleBig {
-    width: 60px;
-    height: 20px;
-    background-color: #d32f2f; /* Color inicial */
+    width: 8vh;
+    height: 2vh;
+    background-color: #d32f2f;
 }
 
-
-.ruleta-container-vertical {
-    position: relative; /* Aseguramos que los elementos dentro se posicionen relativamente */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Triángulos para la ruleta vertical */
+/* Indicador para Ruleta Vertical */
 .triangle-side {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-top: 30px solid transparent;
-    border-bottom: 30px solid transparent;
+    border-top: 3vh solid transparent;
+    border-bottom: 3vh solid transparent;
 }
 
-/* Triángulo que ahora apunta hacia la derecha */
 #triangleLeftBig {
     left: 0;
-    transform: translateY(-50%);
-    border-left: 50px solid #d32f2f; /* Cambiado de border-right a border-left */
+    border-right: 5vh solid #d32f2f;
 }
 
-/* Triángulo que ahora apunta hacia la izquierda */
 #triangleRightBig {
     right: 0;
-    transform: translateY(50%);
-    border-right: 50px solid #d32f2f; /* Cambiado de border-left a border-right */
+    border-left: 5vh solid #d32f2f;
 }
-
 
 /* Botón de inicio de sorteo en el overlay */
 .spin-overlay-section .btn {
@@ -261,4 +266,24 @@ body {
     background-color: #ce93d8;
     color: white;
     padding: 10px 20px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    #winner {
+        font-size: 3rem;
+    }
+
+    #startRaffleBtn, .spin-overlay-section .btn {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    }
+
+    .sidebar {
+        padding: 10px;
+    }
+
+    .names-list {
+        max-height: 300px;
+    }
 }
