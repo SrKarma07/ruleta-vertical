@@ -15,7 +15,6 @@ body {
 /* Título principal con animación */
 #mainTitle {
     font-size: calc(2rem + 2vw);
-    margin-bottom: 40px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
