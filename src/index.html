@@ -6,30 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruleta Aleatoria</title>
     <!-- Estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/transiciones.css">
+
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!-- Contenido principal -->
     <div class="container-fluid p-3 flex-grow-1 contenedor-principal">
+        <!-- Título principal con animación -->
+        <h1 id="mainTitle" class="text-center">
+            <span class="letter" style="--i:1;">R</span>
+            <span class="letter" style="--i:2;">u</span>
+            <span class="letter" style="--i:3;">l</span>
+            <span class="letter" style="--i:4;">e</span>
+            <span class="letter" style="--i:5;">t</span>
+            <span class="letter" style="--i:6;">a</span>
+            <span class="space">&nbsp;</span>
+            <span class="letter" style="--i:7;">A</span>
+            <span class="letter" style="--i:8;">l</span>
+            <span class="letter" style="--i:9;">e</span>
+            <span class="letter" style="--i:10;">a</span>
+            <span class="letter" style="--i:11;">t</span>
+            <span class="letter" style="--i:12;">o</span>
+            <span class="letter" style="--i:13;">r</span>
+            <span class="letter" style="--i:14;">i</span>
+            <span class="letter" style="--i:15;">a</span>
+        </h1>
+
         <!-- Interfaz de selección de ruleta -->
-        <div id="roulette-selection" class="row justify-content-center">
-            <h2 class="text-center mb-4">Seleccione el tipo de ruleta</h2>
-            <div class="col-md-5 text-center">
-                <button id="selectCircularRoulette" class="roulette-option btn btn-light">
-                    <img src="https://media.tenor.com/neir67NC49wAAAAM/ruleta.gif" alt="Ruleta Circular" class="img-fluid">
-                    <div class="hover-text">
-                        <p>Ruleta Circular: Ideal para salones de clase o grupos de 45 individuos</p>
+        <div id="roulette-selection" class="row g-0">
+            <!-- Columnas para las tarjetas -->
+            <div class="col-lg-6 col-md-12 roulette-selection-col">
+                <div class="card roulette-card" id="circularRouletteCard">
+                    <div class="card-body text-center">
+                        <h3 class="card-title circular-title">Ruleta Circular</h3>
+                        <img src="https://media.tenor.com/neir67NC49wAAAAM/ruleta.gif" alt="Ruleta Circular" class="img-fluid roulette-image">
+                        <p class="card-text">Ideal para salones de clase o grupos de 45 individuos</p>
                     </div>
-                </button>
+                </div>
             </div>
-            <div class="col-md-5 text-center">
-                <button id="selectVerticalRoulette" class="roulette-option btn btn-light">
-                    <img src="https://media.tenor.com/dswm8olnV-8AAAAM/raccoon-with-wheel-spin-raccoon-spin-the-wheel.gif" alt="Ruleta Vertical" class="img-fluid">
-                    <div class="hover-text">
-                        <p>Ruleta Vertical: Ideal para sorteos a gran escala con más de 50 individuos hasta 10,000</p>
+            <div class="col-lg-6 col-md-12 roulette-selection-col">
+                <div class="card roulette-card" id="verticalRouletteCard">
+                    <div class="card-body text-center">
+                        <h3 class="card-title vertical-title">Ruleta Vertical</h3>
+                        <img src="https://media.tenor.com/dswm8olnV-8AAAAM/raccoon-with-wheel-spin-raccoon-spin-the-wheel.gif" alt="Ruleta Vertical" class="img-fluid roulette-image">
+                        <p class="card-text">Ideal para sorteos a gran escala con más de 50 individuos hasta 10,000</p>
                     </div>
-                </button>
+                </div>
             </div>
         </div>
 
@@ -161,6 +186,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
     <!-- Scripts personalizados -->
+    <script src="./scripts/transiciones.js"></script>
     <script src="./scripts/configuraciones/colores.js"></script>
     <script src="./scripts/configuraciones/utilities.js"></script>
     <script src="./scripts/configuraciones/Confetti/scripts/confetti.js"></script>

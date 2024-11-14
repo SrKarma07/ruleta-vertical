@@ -1,0 +1,173 @@
+/* transiciones.css */
+
+/* Estilos generales */
+body {
+    background-color: #f3e5f5;
+    font-family: 'Fredoka One', cursive;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor-principal {
+    padding-top: 20px;
+}
+
+/* Título principal con animación */
+#mainTitle {
+    font-size: calc(2rem + 2vw);
+    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#mainTitle .letter,
+#mainTitle .space {
+    display: inline-block;
+}
+
+#mainTitle .letter {
+    animation: wave 2s infinite;
+    animation-delay: calc(0.1s * var(--i));
+}
+
+#mainTitle .space {
+    width: 20px;
+    margin: 0 10px;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 576px) {
+    #mainTitle {
+        font-size: 3rem;
+        text-align: center;
+    }
+    #mainTitle .space {
+        width: 100%;
+        height: 20px;
+    }
+}
+
+/* Animación de ola */
+@keyframes wave {
+    0% {
+        transform: translateY(0);
+        color: #ff0000;
+    }
+    50% {
+        transform: translateY(-20px);
+        color: #0000ff;
+    }
+    100% {
+        transform: translateY(0);
+        color: #00ff00;
+    }
+}
+
+/* Dividir la pantalla en dos columnas con colores diferentes */
+.roulette-selection-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    min-height: 50vh;
+}
+
+.roulette-selection-col:nth-child(1) {
+    background-color: #ffe0b2;
+}
+
+.roulette-selection-col:nth-child(2) {
+    background-color: #b3e5fc;
+}
+
+/* Estilos para las tarjetas */
+.roulette-card {
+    border: none;
+    background: transparent;
+    padding: 2rem 1rem;
+    cursor: pointer;
+    transition: transform 0.3s, opacity 0.3s;
+    max-width: 350px;
+}
+
+.roulette-card:hover {
+    transform: scale(1.05);
+}
+
+.circular-title,
+.vertical-title {
+    font-size: calc(1.5rem + 1vw);
+    margin-bottom: 20px;
+    color: #4a148c;
+    transition: transform 0.3s;
+}
+
+#circularRouletteCard:hover .circular-title {
+    animation: bounce 2s infinite;
+}
+
+#verticalRouletteCard:hover .vertical-title {
+    animation: swing 2s infinite;
+}
+
+/* Intercambio de animaciones */
+/* Ruleta Circular tiene animación bounce y Ruleta Vertical tiene animación swing */
+
+/* Animación de rebote */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-25px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Animación de balanceo */
+@keyframes swing {
+    20% { transform: rotate(15deg); }
+    40% { transform: rotate(-10deg); }
+    60% { transform: rotate(5deg); }
+    80% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.roulette-card .roulette-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.roulette-card .card-text {
+    font-size: calc(1rem + 0.5vw);
+    color: #6a1b9a;
+}
+
+/* Animación para mover al centro y ampliar */
+.animate-to-center {
+    transition: transform 1s ease, opacity 1s ease;
+}
+
+/* Asegurar que el contenido siguiente esté oculto inicialmente */
+#roulette-configuration.d-none {
+    display: none;
+}
+
+/* Transición suave para la siguiente interfaz */
+#roulette-configuration {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#roulette-configuration.show {
+    opacity: 1;
+}
+
+/* Fondo blanco durante la transición */
+.white-background {
+    background-color: white !important;
+}

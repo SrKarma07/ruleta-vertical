@@ -1,10 +1,9 @@
+// main.js
+
 document.addEventListener('DOMContentLoaded', function() {
     // Variables y elementos del DOM
-    const rouletteSelection = document.getElementById('roulette-selection');
     const rouletteConfiguration = document.getElementById('roulette-configuration');
 
-    const selectCircularRouletteBtn = document.getElementById('selectCircularRoulette');
-    const selectVerticalRouletteBtn = document.getElementById('selectVerticalRoulette');
     const startRaffleBtn = document.getElementById('startRaffleBtn');
 
     const spinOverlay = document.getElementById('spinOverlay');
@@ -21,15 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const startSpinBtnCircular = document.getElementById('startSpinBtnCircular');
     const startSpinBtnVertical = document.getElementById('startSpinBtnVertical');
 
-    // Variables
-    let currentRoulette = ''; // 'circular' o 'vertical'
-
     // Inicializar
     updateNamesList(); // Asegúrate de que esta función esté definida en tus scripts
 
     // Eventos de botones
-    selectCircularRouletteBtn.addEventListener('click', () => selectRoulette('circular'));
-    selectVerticalRouletteBtn.addEventListener('click', () => selectRoulette('vertical'));
     startRaffleBtn.addEventListener('click', goToRouletteInterface);
 
     spinAgainBtn.addEventListener('click', spinAgain);
@@ -37,13 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
     closeButton.addEventListener('click', closeOverlay);
     startSpinBtnCircular.addEventListener('click', startSpin);
     startSpinBtnVertical.addEventListener('click', startSpin);
-
-    // Función para seleccionar el tipo de ruleta
-    function selectRoulette(type) {
-        currentRoulette = type;
-        rouletteSelection.classList.add('d-none');
-        rouletteConfiguration.classList.remove('d-none');
-    }
 
     // Función para ir a la interfaz de la ruleta
     function goToRouletteInterface() {
@@ -54,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         rouletteConfiguration.classList.add('d-none');
 
-        if (currentRoulette === 'circular') {
+        if (window.currentRoulette === 'circular') {
             ruletaCircular.init(
                 document.getElementById('canvasBig'),
                 dataManager.getItems(),
@@ -65,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 winnerDiv,
                 closeButton
             );
-        } else {
+        } else if (window.currentRoulette === 'vertical') {
             ruletaVertical.init(
                 document.getElementById('ruletaCanvasBig'),
                 dataManager.getItems(),
@@ -77,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeButton
             );
         }
-        showSpinOverlay(currentRoulette);
+        showSpinOverlay(window.currentRoulette);
     }
 
     // Función para iniciar el sorteo desde el overlay
