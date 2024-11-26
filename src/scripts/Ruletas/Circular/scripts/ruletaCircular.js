@@ -42,20 +42,26 @@ var ruletaCircular = (function() {
 
     function adjustCanvasSize() {
         const parent = canvasBig.parentElement; // Parent is .roulette-wrapper
-        const maxSize = Math.min(window.innerWidth * 0.8, window.innerHeight * 0.6); // Canvas ocupa el 80% del ancho o el 60% de la altura
-    
-        canvasBig.width = maxSize * window.devicePixelRatio;
-        canvasBig.height = maxSize * window.devicePixelRatio;
-    
-        canvasBig.style.width = maxSize + 'px';
-        canvasBig.style.height = maxSize + 'px';
-    
+        const container = parent.parentElement; // .ruleta-container
+        const availableHeight = window.innerHeight - container.offsetTop - 150; // Ajusta según el espacio del footer y otros elementos
+        const availableWidth = window.innerWidth - 100; // Ajusta según el espacio para el indicador y padding
+
+        // Determinar el tamaño máximo que puede ocupar el canvas sin invadir el espacio del indicador
+        const size = Math.min(parent.offsetWidth, availableHeight * 0.6, availableWidth * 0.6); // Ajusta el tamaño proporcionalmente
+
+        if (size <= 0) return; // Evitar tamaños negativos o cero
+
+        canvasBig.width = size * window.devicePixelRatio;
+        canvasBig.height = size * window.devicePixelRatio;
+
+        canvasBig.style.width = size + 'px';
+        canvasBig.style.height = size + 'px';
+
         ctxBig.setTransform(1, 0, 0, 1, 0, 0); // Reset scaling
         ctxBig.scale(window.devicePixelRatio, window.devicePixelRatio);
-    
+
         draw(ctxBig, canvasBig, angle);
     }
-    
 
     function draw(context, canvasElement, currentAngle) {
         const numItems = names.length;
@@ -90,7 +96,7 @@ var ruletaCircular = (function() {
             context.rotate(startAngle + itemAngle / 2);
             context.textAlign = "right";
             context.fillStyle = "#000";
-            context.font = '16px Arial';
+            context.font = `${Math.max(12, radius / 10)}px Arial`; // Ajusta el tamaño del texto proporcionalmente
             context.fillText(names[i], radius - 10, 10);
             context.restore();
         }

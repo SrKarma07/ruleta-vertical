@@ -1,133 +1,97 @@
-/* Contenedor principal para la ruleta circular */
-.ruleta-container {
-    display: flex;
+/* Overlay del ganador */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    min-height: 100vh; /* Asegura que ocupe al menos la altura de la pantalla */
+    z-index: 10001;
+    padding: 2%;
     box-sizing: border-box;
-    position: relative;
-    padding: 2rem 1rem; /* Aumenta el padding para evitar superposición con el footer */
-    overflow: hidden; /* Evita scroll innecesario */
 }
 
-/* Canvas centrado */
-.roulette-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    aspect-ratio: 1; /* Mantiene proporción 1:1 */
+#overlay.d-flex {
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-.roulette-wrapper canvas {
-    width: 100%;
-    height: auto; /* Asegura que mantenga el aspecto */
+/* Imagen del ganador */
+#winnerGif {
+    max-width: 80%; /* Se adapta al 80% del ancho del contenedor */
+    max-height: 50vh; /* No excede el 50% de la altura de la pantalla */
+    object-fit: contain; /* Mantiene la proporción del GIF */
 }
 
-/* Indicador fuera del canvas */
-#indicator {
+/* Nombre del ganador */
+#winner {
+    font-size: clamp(2rem, 5vw, 5rem); /* Escala el tamaño del texto según el ancho de la pantalla */
+    color: white;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+/* Botón de cierre */
+#closeButton {
     position: absolute;
-    top: 50%;
-    right: -60px; /* Posiciona el indicador fuera del canvas */
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10; /* Asegura que esté por encima del canvas */
+    top: 2%;
+    right: 2%;
+    font-size: clamp(1rem, 2.5vw, 2rem); /* Escala según el ancho de la pantalla */
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10001; /* Siempre sobre otros elementos */
 }
 
-#triangleBig {
-    width: 0;
-    height: 0;
-    border-top: clamp(1.5vh, 3vw, 3vh) solid transparent;
-    border-bottom: clamp(1.5vh, 3vw, 3vh) solid transparent;
-    border-right: clamp(2.5vh, 5vw, 5vh) solid #d32f2f;
+#closeButton.hidden {
+    display: none;
 }
 
-#rectangleBig {
-    width: clamp(4vh, 8vw, 8vh);
-    height: clamp(1vh, 2vw, 2vh);
-    background-color: #d32f2f;
+/* Botones de acción */
+.winner-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Ajusta el número de columnas según el espacio */
+    gap: 10px;
+    width: 100%;
+    max-width: 400px; /* Limita el ancho máximo del contenedor de botones */
+    margin-top: 1rem;
+    box-sizing: border-box;
 }
 
-/* Botón centrado debajo del canvas */
-#startSpinBtnCircular {
-    margin-top: 1.5rem;
+.winner-buttons button {
     padding: 0.8em 1.5em;
-    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(0.8rem, 2vw, 1.5rem); /* Escala el tamaño del texto */
     background-color: #8e24aa;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
-    display: inline-block;
-    z-index: 5; /* Asegura que esté por encima de otros elementos si es necesario */
+    width: 100%; /* Asegura que el botón se ajuste a la celda de la grilla */
+    box-sizing: border-box;
 }
 
-#startSpinBtnCircular:hover {
+.winner-buttons button:hover {
     background-color: #7b1fa2;
 }
 
-/* Responsividad */
-@media (orientation: portrait) {
-    .ruleta-container {
-        flex-direction: column;
+/* Responsividad adicional */
+@media (max-height: 600px) {
+    #winnerGif {
+        max-height: 40vh; /* Reduce el tamaño del GIF en pantallas más bajas */
     }
 
-    #indicator {
-        right: -60px; /* Mantiene el indicador fuera del canvas */
-    }
-}
-
-@media (orientation: landscape) {
-    .ruleta-container {
-        flex-direction: column;
-    }
-
-    #indicator {
-        right: -60px; /* Mantiene el indicador fuera del canvas */
+    .winner-buttons button {
+        padding: 0.5em 1em; /* Reduce el espacio interno del botón */
     }
 }
 
 @media (max-width: 768px) {
-    #indicator {
-        right: -40px; /* Ajusta para pantallas más pequeñas */
-    }
-
-    #triangleBig {
-        border-top: clamp(1vh, 2vw, 2vh) solid transparent;
-        border-bottom: clamp(1vh, 2vw, 2vh) solid transparent;
-        border-right: clamp(2vh, 4vw, 4vh) solid #d32f2f;
-    }
-
-    #rectangleBig {
-        width: clamp(3vh, 6vw, 6vh);
-        height: clamp(0.8vh, 1.6vw, 1.6vh);
-    }
-
-    #startSpinBtnCircular {
-        padding: 0.6em 1em;
-        font-size: clamp(0.8rem, 1.8vw, 1.2rem);
-    }
-}
-
-@media (max-height: 500px) {
-    .ruleta-container {
-        padding: 1rem;
-    }
-
-    #indicator {
-        right: -40px; /* Ajusta para pantallas con menos altura */
-    }
-
-    #startSpinBtnCircular {
-        padding: 0.6em 1em;
-        font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+    #winner {
+        margin-bottom: 1rem; /* Reduce el margen en pantallas más pequeñas */
     }
 }

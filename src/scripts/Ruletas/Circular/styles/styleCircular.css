@@ -5,59 +5,57 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100vh; /* Ocupa toda la pantalla */
+    /* Eliminar height: 100vh para evitar superposición con el footer */
     box-sizing: border-box;
     position: relative;
-    overflow: hidden; /* Evitar scroll innecesario */
     padding: 1rem;
+    overflow: hidden; /* Evita scroll innecesario */
 }
 
-/* Canvas centrado */
+/* Wrapper para el canvas y el indicador */
 .roulette-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    aspect-ratio: 1; /* Mantiene proporción 1:1 */
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    max-width: 800px; /* Ajustar según necesidad */
+    /* aspect-ratio: 1; Eliminar para permitir flexibilidad en la orientación */
 }
 
+/* Canvas de la ruleta */
 .roulette-wrapper canvas {
     width: 100%;
-    height: auto; /* Asegura que mantenga el aspecto */
+    max-width: 600px;
+    height: auto; /* Mantiene el aspecto */
+    flex-shrink: 0;
 }
 
-/* Indicador fuera del canvas */
+/* Indicador para la Ruleta Circular */
 #indicator {
-    position: absolute;
-    top: 50%;
-    right: calc(50% - 300px); /* Ajusta para que quede fuera del canvas */
-    transform: translate(100%, -50%); /* Mueve completamente fuera */
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 10; /* Asegura que esté por encima del canvas */
+    margin-left: 1rem; /* Espacio entre el canvas y el indicador */
 }
 
 #triangleBig {
     width: 0;
     height: 0;
-    border-top: 3vh solid transparent;
-    border-bottom: 3vh solid transparent;
-    border-right: 5vh solid #d32f2f;
+    border-top: clamp(1vh, 2vw, 3vh) solid transparent;
+    border-bottom: clamp(1vh, 2vw, 3vh) solid transparent;
+    border-right: clamp(2vh, 4vw, 5vh) solid #d32f2f;
 }
 
 #rectangleBig {
-    width: 8vh;
-    height: 2vh;
+    width: clamp(4vh, 8vw, 8vh);
+    height: clamp(1vh, 2vw, 2vh);
     background-color: #d32f2f;
 }
 
 /* Botón centrado debajo del canvas */
 #startSpinBtnCircular {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding: 0.8em 1.5em;
     font-size: clamp(1rem, 2vw, 1.5rem);
     background-color: #8e24aa;
@@ -73,24 +71,85 @@
     background-color: #7b1fa2;
 }
 
-/* Responsividad */
-@media (max-width: 768px) {
+/* Responsividad según orientación */
+@media (orientation: portrait) {
+    .roulette-wrapper {
+        flex-direction: row; /* Distribuir canvas e indicador horizontalmente */
+    }
+
     #indicator {
-        right: calc(50% - 150px); /* Ajusta el desplazamiento en pantallas pequeñas */
+        margin-left: 1rem;
+    }
+}
+
+@media (orientation: landscape) {
+    .roulette-wrapper {
+        flex-direction: column; /* Mantener canvas arriba y indicador debajo */
+    }
+
+    #indicator {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .roulette-wrapper {
+        flex-direction: column; /* Apilar canvas e indicador */
+        align-items: center;
+    }
+
+    #indicator {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+
+    #triangleBig {
+        border-top: clamp(1vh, 1.5vw, 2vh) solid transparent;
+        border-bottom: clamp(1vh, 1.5vw, 2vh) solid transparent;
+        border-right: clamp(2vh, 3vw, 4vh) solid #d32f2f;
+    }
+
+    #rectangleBig {
+        width: clamp(3vh, 6vw, 6vh);
+        height: clamp(0.8vh, 1.6vw, 1.6vh);
+    }
+
+    #startSpinBtnCircular {
+        padding: 0.6em 1em;
+        font-size: clamp(0.8rem, 1.8vw, 1.2rem);
     }
 }
 
 @media (max-height: 500px) {
     .ruleta-container {
-        padding: 0.5rem;
+        padding: 1rem;
+    }
+
+    .roulette-wrapper {
+        flex-direction: column;
+        align-items: center;
     }
 
     #indicator {
-        right: calc(50% - 200px); /* Ajusta para pantallas con menos altura */
+        margin-left: 0;
+        margin-top: 1rem;
     }
 
     #startSpinBtnCircular {
         padding: 0.6em 1em;
-        font-size: clamp(0.8rem, 2vw, 1.2rem);
+        font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+    }
+
+    #triangleBig {
+        border-top: clamp(1vh, 1.5vw, 2vh) solid transparent;
+        border-bottom: clamp(1vh, 1.5vw, 2vh) solid transparent;
+        border-right: clamp(2vh, 3vw, 4vh) solid #d32f2f;
+    }
+
+    #rectangleBig {
+        width: clamp(3vh, 6vw, 6vh);
+        height: clamp(0.8vh, 1.6vw, 1.6vh);
     }
 }
