@@ -5,25 +5,30 @@ let confettiParticles = [];
 let confettiAnimationId;
 let isConfettiRunning = false;
 
-// Función para iniciar la animación de confeti
+const MAX_CONFETTI_PARTICLES = 100; // Adjust this number as needed
+
+// Function to start the confetti animation
 function startConfetti() {
-    if (isConfettiRunning) return; // Evitar múltiples instancias
+    if (isConfettiRunning) return; // Avoid multiple instances
     isConfettiRunning = true;
 
     confettiContainer = document.createElement('div');
     confettiContainer.classList.add('confetti-container');
     document.body.appendChild(confettiContainer);
 
-    // Generar partículas en intervalos
+    // Generate all confetti particles upfront
     createConfettiParticles();
     confettiAnimationId = requestAnimationFrame(updateConfetti);
+
+    // Optional: Stop the confetti after a certain time
+    // setTimeout(stopConfetti, 10000); // Stops after 10 seconds
 }
 
-// Función para detener la animación de confeti
+// Function to stop the confetti animation
 function stopConfetti() {
     isConfettiRunning = false;
 
-    // Limpiar el array de partículas
+    // Clear the array of particles
     confettiParticles = [];
 
     if (confettiAnimationId) {
@@ -37,13 +42,12 @@ function stopConfetti() {
     }
 }
 
-// Función para crear un lote de partículas de confeti
+// Function to create the confetti particles
 function createConfettiParticles() {
     const shapes = ['star', 'square', 'circle', 'triangle', 'heart'];
     const colors = ['#FFC107', '#FF5722', '#4CAF50', '#2196F3', '#9C27B0'];
-    const numParticles = 10; // Reducir la cantidad de partículas en cada lote
 
-    for (let i = 0; i < numParticles; i++) {
+    for (let i = 0; i < MAX_CONFETTI_PARTICLES; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
 
@@ -68,7 +72,7 @@ function createConfettiParticles() {
             element: confetti,
             velocity: {
                 x: (Math.random() - 0.5) * 1.5,
-                y: Math.random() * 2 + 1.5, // Menor velocidad de caída
+                y: Math.random() * 2 + 1.5, // Lower fall speed
                 rotation: (Math.random() - 0.5) * 10
             },
             position: {
@@ -78,12 +82,9 @@ function createConfettiParticles() {
             rotation: Math.random() * 360
         });
     }
-
-    // Crear el siguiente lote de partículas en 200ms
-    if (isConfettiRunning) setTimeout(createConfettiParticles, 200);
 }
 
-// Función para actualizar las partículas de confeti
+// Function to update the confetti particles
 function updateConfetti() {
     if (!isConfettiRunning) return;
 
@@ -92,23 +93,46 @@ function updateConfetti() {
         particle.position.y += particle.velocity.y;
         particle.rotation += particle.velocity.rotation;
 
-        // Actualizar estilo de cada partícula
+        // Update each particle's style
         particle.element.style.transform = `translate3d(${particle.position.x}px, ${particle.position.y}px, 0) rotate(${particle.rotation}deg)`;
 
-        // Reiniciar partículas al final de la pantalla
-        if (particle.position.y > window.innerHeight) {
-            // Volver a la parte superior en una posición aleatoria
-            particle.position.y = -20;
-            particle.position.x = Math.random() * window.innerWidth;
-
-            // Asignar nueva velocidad y rotación aleatoria
-            particle.velocity.y = Math.random() * 2 + 1.5;
-            particle.velocity.x = (Math.random() - 0.5) * 1.5;
-            particle.rotation = Math.random() * 360;
+        // Recycle particles that have gone off-screen
+        if (
+            particle.position.y > window.innerHeight ||
+            particle.position.x < -50 ||
+            particle.position.x > window.innerWidth + 50
+        ) {
+            resetParticle(particle);
         }
     });
 
     confettiAnimationId = requestAnimationFrame(updateConfetti);
+}
+
+// Function to reset and recycle a confetti particle
+function resetParticle(particle) {
+    particle.position.x = Math.random() * window.innerWidth;
+    particle.position.y = -20; // Start above the top of the screen
+
+    particle.velocity = {
+        x: (Math.random() - 0.5) * 1.5,
+        y: Math.random() * 2 + 1.5,
+        rotation: (Math.random() - 0.5) * 10
+    };
+
+    particle.rotation = Math.random() * 360;
+
+    // Optionally change the particle's color and shape
+    const shapes = ['star', 'square', 'circle', 'triangle', 'heart'];
+    const colors = ['#FFC107', '#FF5722', '#4CAF50', '#2196F3', '#9C27B0'];
+
+    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    particle.element.className = 'confetti';
+    particle.element.classList.add(`confetti--${shape}`);
+    particle.element.style.backgroundColor = color;
+    particle.element.style.color = color;
 }
 
 // Estilos CSS para las partículas de confeti

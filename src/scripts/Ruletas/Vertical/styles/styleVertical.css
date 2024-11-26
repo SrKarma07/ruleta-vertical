@@ -1,0 +1,54 @@
+/* Contenedor de la ruleta vertical */
+.ruleta-container-vertical {
+    width: 100%;
+    height: 60vh;
+    margin: 0 auto;
+}
+
+.roulette-wrapper-vertical {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.roulette-wrapper-vertical canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Indicadores para Ruleta Vertical */
+.triangle-side {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 3vh solid transparent;
+    border-bottom: 3vh solid transparent;
+}
+
+#triangleLeftBig {
+    left: 0;
+    border-right: 5vh solid #d32f2f;
+}
+
+#triangleRightBig {
+    right: 0;
+    border-left: 5vh solid #d32f2f;
+}
+
+/* Botón para iniciar el sorteo */
+#startSpinBtnVertical {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    background-color: #8e24aa;
+    color: white;
+}
+
+#startSpinBtnVertical:hover {
+    background-color: #7b1fa2;
+}

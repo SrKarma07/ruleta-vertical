@@ -1,0 +1,58 @@
+/* Contenedor de la ruleta circular */
+.ruleta-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.roulette-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* Mantener aspecto cuadrado */
+}
+
+.roulette-wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Indicador para Ruleta Circular */
+#indicator {
+    position: absolute;
+    top: 53%;
+    right: 0;
+    transform: translate(100%, -50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#triangleBig {
+    width: 0;
+    height: 0;
+    border-top: 3vh solid transparent;
+    border-bottom: 3vh solid transparent;
+    border-right: 5vh solid #d32f2f;
+}
+
+#rectangleBig {
+    width: 8vh;
+    height: 2vh;
+    background-color: #d32f2f;
+}
+
+/* Botón para iniciar el sorteo */
+#startSpinBtnCircular {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    background-color: #8e24aa;
+    color: white;
+}
+
+#startSpinBtnCircular:hover {
+    background-color: #7b1fa2;
+}
