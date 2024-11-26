@@ -1,33 +1,44 @@
-/* Contenedor de la ruleta circular */
+/* Contenedor principal para la ruleta circular */
 .ruleta-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+    height: 100vh; /* Ocupa toda la pantalla */
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Evitar scroll innecesario */
+    padding: 1rem;
 }
 
+/* Canvas centrado */
 .roulette-wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 100%; /* Mantener aspecto cuadrado */
+    max-width: 600px;
+    aspect-ratio: 1; /* Mantiene proporción 1:1 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .roulette-wrapper canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
+    height: auto; /* Asegura que mantenga el aspecto */
 }
 
-/* Indicador para Ruleta Circular */
+/* Indicador fuera del canvas */
 #indicator {
     position: absolute;
-    top: 53%;
-    right: 0;
-    transform: translate(100%, -50%);
+    top: 50%;
+    right: calc(50% - 300px); /* Ajusta para que quede fuera del canvas */
+    transform: translate(100%, -50%); /* Mueve completamente fuera */
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    z-index: 10; /* Asegura que esté por encima del canvas */
 }
 
 #triangleBig {
@@ -44,15 +55,42 @@
     background-color: #d32f2f;
 }
 
-/* Botón para iniciar el sorteo */
+/* Botón centrado debajo del canvas */
 #startSpinBtnCircular {
-    margin-top: 20px;
-    padding: 15px 30px;
-    font-size: 1.5rem;
+    margin-top: 1rem;
+    padding: 0.8em 1.5em;
+    font-size: clamp(1rem, 2vw, 1.5rem);
     background-color: #8e24aa;
     color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
 }
 
 #startSpinBtnCircular:hover {
     background-color: #7b1fa2;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    #indicator {
+        right: calc(50% - 150px); /* Ajusta el desplazamiento en pantallas pequeñas */
+    }
+}
+
+@media (max-height: 500px) {
+    .ruleta-container {
+        padding: 0.5rem;
+    }
+
+    #indicator {
+        right: calc(50% - 200px); /* Ajusta para pantallas con menos altura */
+    }
+
+    #startSpinBtnCircular {
+        padding: 0.6em 1em;
+        font-size: clamp(0.8rem, 2vw, 1.2rem);
+    }
 }

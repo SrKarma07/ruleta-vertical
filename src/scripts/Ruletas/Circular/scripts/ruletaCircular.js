@@ -42,21 +42,20 @@ var ruletaCircular = (function() {
 
     function adjustCanvasSize() {
         const parent = canvasBig.parentElement; // Parent is .roulette-wrapper
-        const size = parent.offsetWidth; // Since aspect ratio is 1:1, width and height are the same
-
-        if (size === 0) return; // Evitar división por cero
-
-        canvasBig.width = size * window.devicePixelRatio;
-        canvasBig.height = size * window.devicePixelRatio;
-
-        canvasBig.style.width = size + 'px';
-        canvasBig.style.height = size + 'px';
-
-        ctxBig.setTransform(1, 0, 0, 1, 0, 0); // Reset any scaling
+        const maxSize = Math.min(window.innerWidth * 0.8, window.innerHeight * 0.6); // Canvas ocupa el 80% del ancho o el 60% de la altura
+    
+        canvasBig.width = maxSize * window.devicePixelRatio;
+        canvasBig.height = maxSize * window.devicePixelRatio;
+    
+        canvasBig.style.width = maxSize + 'px';
+        canvasBig.style.height = maxSize + 'px';
+    
+        ctxBig.setTransform(1, 0, 0, 1, 0, 0); // Reset scaling
         ctxBig.scale(window.devicePixelRatio, window.devicePixelRatio);
-
+    
         draw(ctxBig, canvasBig, angle);
     }
+    
 
     function draw(context, canvasElement, currentAngle) {
         const numItems = names.length;
