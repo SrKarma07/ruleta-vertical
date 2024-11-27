@@ -1,3 +1,5 @@
+/* main.css */
+
 /* Estilos generales */
 body {
     background-image: url(../assets/fondo.jpg);
@@ -11,38 +13,62 @@ body {
     padding-top: 2vh; /* Cambio de 20px a 2vh para mayor responsividad */
 }
 
+/* Asegura que el contenedor padre del sidebar usa Flexbox y se estira */
+.sidebar-container {
+    display: flex;
+    flex-direction: row;
+    height: 80%; /* Ocupa todo el alto del contenedor padre */
+    max-height: 100%;
+}
+
 /* Estilos para la interfaz de configuración */
 .sidebar {
     background-color: #ce93d8;
     color: white;
     padding: 2rem; /* Cambio de 20px a 2rem */
     border-radius: 0.75rem; /* Cambio de 10px a 0.75rem */
+    flex: 0 0 100%; /* Cambiado de 35% a 100% para ocupar todo el ancho */
+    max-width: 100%; /* Asegura que el sidebar no exceda el 100% */
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Permite que el alto se ajuste al contenido */
+    font-size: 0.9rem; /* Tamaño de fuente ajustado */
 }
 
 .sidebar h2, .sidebar h5 {
     color: white;
+    font-size: 1.2rem; /* Reducido de 1.5rem a 1.2rem */
 }
 
+.sidebar .control-section {
+    margin-top: 2rem; /* Cambio de 20px a 2rem */
+    font-size: 0.85rem; /* Reducido de 0.9rem a 0.85rem */
+}
+
+/* Botones de opciones en la sidebar */
 .btn-option {
     background-color: #ba68c8;
     color: white;
     width: 100%;
-    padding: 0.75rem 1.5rem; /* Añadido padding para mejor accesibilidad */
-    font-size: 1rem;
+    padding: 0.5rem 1rem; /* Reducido de 0.75rem 1.5rem a 0.5rem 1rem */
+    font-size: 0.85rem; /* Reducido de 0.9rem a 0.85rem */
     border: none; /* Eliminado borde por defecto */
-    border-radius: 0.5rem; /* Cambio de 5px a 0.5rem */
+    border-radius: 0.5rem; /* Mantiene el cambio de 0.5rem */
     cursor: pointer;
     transition: background-color 0.3s ease; /* Suaviza el cambio de color en hover */
+    margin-bottom: 0.5rem; /* Añade margen inferior para separación */
 }
 
 .btn-option:hover {
     background-color: #ab47bc;
 }
 
+/* Control Sections */
 .control-section {
     margin-top: 2rem; /* Cambio de 20px a 2rem */
 }
 
+/* Names List */
 .names-list {
     background-color: #f8f9fa;
     width: 90%;
@@ -78,14 +104,15 @@ body {
     color: #a71d2a; /* Color más oscuro al pasar el mouse */
 }
 
+/* Botones de acción */
 #newWheelBtn {
     background-color: #00de60;
     color: white;
-    padding: 0.75rem 1.5rem; /* Cambio de 12px 24px a rem */
+    padding: 0.5rem 1rem; /* Reducido de 0.75rem 1.5rem a 0.5rem 1rem */
     border: none;
     border-radius: 0.5rem; /* Cambio de 8px a 0.5rem */
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.85rem; /* Reducido de 0.9rem a 0.85rem */
     transition: background-color 0.3s ease;
 }
 
@@ -96,11 +123,11 @@ body {
 #clearWheelBtn {
     background-color: #ff3e34;
     color: white;
-    padding: 0.75rem 1.5rem; /* Cambio de 12px 24px a rem */
+    padding: 0.5rem 1rem; /* Reducido de 0.75rem 1.5rem a 0.5rem 1rem */
     border: none;
     border-radius: 0.5rem; /* Cambio de 8px a 0.5rem */
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.85rem; /* Reducido de 0.9rem a 0.85rem */
     transition: background-color 0.3s ease;
 }
 
@@ -111,11 +138,11 @@ body {
 #startRaffleBtn {
     background-color: #ffcc00;
     color: white;
-    padding: 0.75rem 1.5rem; /* Cambio de 12px 24px a rem */
+    padding: 0.5rem 1rem; /* Reducido de 0.75rem 1.5rem a 0.5rem 1rem */
     border: none;
     border-radius: 0.5rem; /* Cambio de 8px a 0.5rem */
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.85rem; /* Reducido de 0.9rem a 0.85rem */
     transition: background-color 0.3s ease;
 }
 
@@ -123,6 +150,24 @@ body {
     background-color: #fefe00;
 }
 
+/* Botones de acción en .btn-group-horizontal */
+.btn-group-horizontal {
+    display: flex;
+    gap: 1rem; /* Espacio entre los botones */
+}
+
+.btn-group-horizontal .btn {
+    flex: 1; /* Cada botón ocupa un espacio igual */
+    max-width: 50%; /* Asegura que no excedan el 50% del contenedor */
+    padding: 0.5rem 1rem; /* Reducido de 0.75rem 1rem a 0.5rem 1rem */
+    font-size: 0.85rem; /* Reducido de 0.9rem a 0.85rem */
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-group-horizontal .btn:hover {
+    /* Mantiene los efectos hover existentes */
+}
 
 /* Ajustes responsivos */
 @media (max-width: 768px) {
@@ -141,5 +186,30 @@ body {
 
     .names-list {
         max-height: 30vh; /* Cambio de 300px a 30vh */
+    }
+
+    /* Ajustes para botones de rangos */
+    #ranges .btn-secondary {
+        font-size: 0.6rem; /* Reducido de 0.85rem a 0.8rem */
+        padding: 0.2rem 0.4rem; /* Reducido de 0.3rem 0.6rem a 0.2rem 0.4rem */
+        margin-bottom: 0.5rem; /* Mantiene el margen inferior */
+    }
+
+    /* Ajustes adicionales para pantallas pequeñas */
+    @media (max-width: 576px) {
+        #ranges .btn-secondary {
+            font-size: 0.75rem; /* Ajuste adicional para pantallas pequeñas */
+            padding: 0.25rem 0.5rem; /* Reducido aún más */
+        }
+
+        .btn-group-horizontal {
+            flex-direction: row; /* Alinea los botones en fila */
+            gap: 0.5rem; /* Reduce el espacio entre los botones */
+        }
+
+        .btn-group-horizontal .btn {
+            padding: 0.4rem 0.8rem; /* Ajuste del padding para pantallas pequeñas */
+            font-size: 0.8rem; /* Reducido aún más */
+        }
     }
 }

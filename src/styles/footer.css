@@ -11,7 +11,8 @@
     flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
     box-sizing: border-box;
     width: 100%;
-    min-height: 10vh; /* Asegura que ocupe al menos el 10% del alto de la pantalla */
+    max-height: 10vh; /* Asegura que ocupe como máximo el 10% del alto de la pantalla */
+    overflow: hidden; /* Previene el desbordamiento de contenido */
 }
 
 /* Estilos para los elementos dentro del footer */
@@ -27,6 +28,7 @@
     display: flex;
     align-items: center;
     word-break: break-word; /* Evita que el texto se desborde */
+    text-decoration: none; /* Elimina la subrayado del enlace */
 }
 
 /* Estilos para párrafos dentro del footer */
@@ -37,6 +39,14 @@
     word-break: break-word; /* Evita que el texto se desborde */
 }
 
+/* Enlaces dentro del footer */
+.footer a.cc-license {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 0.9rem;
+    word-break: break-word; /* Evita que el texto se desborde */
+}
+
 /* Media Queries para pantallas pequeñas */
 @media (max-width: 576px) {
     .footer {
@@ -44,7 +54,7 @@
         align-items: flex-start; /* Alinea a la izquierda en pantallas pequeñas */
         justify-content: center;
         padding: 0.75rem 1rem; /* Reduce el padding para adaptarse a pantallas pequeñas */
-        min-height: auto; /* Permite que la altura se ajuste al contenido */
+        max-height: 10vh; /* Mantiene el límite máximo */
     }
 
     .footer p, .footer a.cc-license {
