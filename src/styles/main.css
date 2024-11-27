@@ -1,0 +1,145 @@
+/* Estilos generales */
+body {
+    background-image: url(../assets/fondo.jpg);
+    background-size: cover; /* Asegura que la imagen de fondo cubra todo el viewport */
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor-principal {
+    padding-top: 2vh; /* Cambio de 20px a 2vh para mayor responsividad */
+}
+
+/* Estilos para la interfaz de configuración */
+.sidebar {
+    background-color: #ce93d8;
+    color: white;
+    padding: 2rem; /* Cambio de 20px a 2rem */
+    border-radius: 0.75rem; /* Cambio de 10px a 0.75rem */
+}
+
+.sidebar h2, .sidebar h5 {
+    color: white;
+}
+
+.btn-option {
+    background-color: #ba68c8;
+    color: white;
+    width: 100%;
+    padding: 0.75rem 1.5rem; /* Añadido padding para mejor accesibilidad */
+    font-size: 1rem;
+    border: none; /* Eliminado borde por defecto */
+    border-radius: 0.5rem; /* Cambio de 5px a 0.5rem */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Suaviza el cambio de color en hover */
+}
+
+.btn-option:hover {
+    background-color: #ab47bc;
+}
+
+.control-section {
+    margin-top: 2rem; /* Cambio de 20px a 2rem */
+}
+
+.names-list {
+    background-color: #f8f9fa;
+    width: 90%;
+    max-height: 50vh; /* Cambio de 500px a 50vh para mayor responsividad */
+    overflow-y: auto;
+    padding: 1rem; /* Cambio de 15px a 1rem */
+    border-radius: 0.75rem; /* Cambio de 10px a 0.75rem */
+    margin-top: 2rem; /* Cambio de 20px a 2rem */
+}
+
+.name-item {
+    display: flex;
+    justify-content: space-between; /* Eliminado justify-content: center; duplicado */
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 0.5rem 0.75rem; /* Cambio de 8px 12px a rem */
+    border-radius: 0.3125rem; /* Cambio de 5px a 0.3125rem */
+    margin-bottom: 0.5rem; /* Cambio de 8px a 0.5rem */
+}
+
+.name-item button {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0; /* Asegura que no haya padding adicional */
+    transition: color 0.3s ease; /* Suaviza el cambio de color en hover */
+}
+
+.name-item button:hover {
+    color: #a71d2a; /* Color más oscuro al pasar el mouse */
+}
+
+#newWheelBtn {
+    background-color: #00de60;
+    color: white;
+    padding: 0.75rem 1.5rem; /* Cambio de 12px 24px a rem */
+    border: none;
+    border-radius: 0.5rem; /* Cambio de 8px a 0.5rem */
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#newWheelBtn:hover {
+    background-color: #00ff48;
+}
+
+#clearWheelBtn {
+    background-color: #ff3e34;
+    color: white;
+    padding: 0.75rem 1.5rem; /* Cambio de 12px 24px a rem */
+    border: none;
+    border-radius: 0.5rem; /* Cambio de 8px a 0.5rem */
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#clearWheelBtn:hover {
+    background-color: #ff1e1e;
+}
+
+#startRaffleBtn {
+    background-color: #ffcc00;
+    color: white;
+    padding: 0.75rem 1.5rem; /* Cambio de 12px 24px a rem */
+    border: none;
+    border-radius: 0.5rem; /* Cambio de 8px a 0.5rem */
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#startRaffleBtn:hover {
+    background-color: #fefe00;
+}
+
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    #winner {
+        font-size: 5vw; /* Cambio de 3rem a una unidad más responsiva */
+    }
+
+    #startRaffleBtn, .spin-overlay-section .btn {
+        font-size: 1.2rem;
+        padding: 0.625rem 1.25rem; /* Cambio de 10px 20px a rem */
+    }
+
+    .sidebar {
+        padding: 1rem; /* Cambio de 10px a 1rem */
+    }
+
+    .names-list {
+        max-height: 30vh; /* Cambio de 300px a 30vh */
+    }
+}

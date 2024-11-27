@@ -1,6 +1,6 @@
 // main.js
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Variables y elementos del DOM
     const rouletteConfiguration = document.getElementById('roulette-configuration');
 
@@ -31,7 +31,25 @@ document.addEventListener('DOMContentLoaded', function() {
     closeButton.addEventListener('click', closeOverlay);
     startSpinBtnCircular.addEventListener('click', () => startSpin('circular'));
     startSpinBtnVertical.addEventListener('click', () => startSpin('vertical'));
+    // Función para cargar el footer dinámicamente
+    function loadFooter() {
+        fetch('./components/footer.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar el footer');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error cargando el footer:', error);
+            });
+    }
 
+    // Llamar a la función para cargar el footer
+    loadFooter();
     // Función para ir a la interfaz de la ruleta
     function goToRouletteInterface() {
         const items = dataManager.getItems();
