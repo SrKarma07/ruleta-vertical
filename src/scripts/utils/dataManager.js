@@ -10,6 +10,7 @@ const dataManager = (function() {
 
     function removeItem(name) {
         items = items.filter(n => n !== name);
+        delete colors[name];
     }
 
     function getItems() {

@@ -1,3 +1,5 @@
+// ruletaCircular.js
+
 var ruletaCircular = (function() {
     let canvasBig, ctxBig;
     let names = [];
@@ -14,6 +16,8 @@ var ruletaCircular = (function() {
     let colors = {};
     let overlay, spinOverlay, winnerDiv, closeButton;
     let numWinnersSelect;
+
+    let spinResolve; // Resolver de la promesa
 
     function init(canvasBigElement, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
         canvasBig = canvasBigElement;
@@ -104,25 +108,30 @@ var ruletaCircular = (function() {
         }
     }
 
-    function spin(numWinners = 1) {
-        if (isAnimating || names.length === 0) {
-            alert('Por favor, añade al menos un nombre antes de iniciar la ruleta.');
-            return;
-        }
-        isAnimating = true;
-        startTime = null;
-        totalDuration = 5000 + Math.random() * 2000;
+    function spin() {
+        return new Promise((resolve, reject) => {
+            if (isAnimating || names.length === 0) {
+                alert('Por favor, añade al menos un nombre antes de iniciar la ruleta.');
+                reject('Animación en progreso o sin elementos.');
+                return;
+            }
+            isAnimating = true;
+            startTime = null;
+            totalDuration = 5000 + Math.random() * 2000;
 
-        // Establecer la duración de desaceleración al 70% del tiempo total
-        decelerationDuration = totalDuration * 0.7;
+            // Establecer la duración de desaceleración al 70% del tiempo total
+            decelerationDuration = totalDuration * 0.7;
 
-        initialAngularSpeed = 0.5; // Velocidad angular inicial en radianes por frame
+            initialAngularSpeed = 0.5; // Velocidad angular inicial en radianes por frame
 
-        // Calcular giros extra para mayor aleatoriedad
-        const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
-        angle -= extraRotations * ((2 * Math.PI) / names.length);
+            // Calcular giros extra para mayor aleatoriedad
+            const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
+            angle -= extraRotations * ((2 * Math.PI) / names.length);
 
-        animationFrame = requestAnimationFrame(animate);
+            spinResolve = resolve; // Guardar el resolver para usarlo en finalizeStop
+
+            animationFrame = requestAnimationFrame(animate.bind(this));
+        });
     }
 
     function animate(timestamp) {
@@ -145,36 +154,39 @@ var ruletaCircular = (function() {
         // Actualizar el color del indicador
         updateIndicatorColor();
 
-        animationFrame = requestAnimationFrame(animate);
+        animationFrame = requestAnimationFrame(animate.bind(this));
     }
 
     function finalizeStop() {
         isAnimating = false;
 
-        const numWinners = parseInt(numWinnersSelect.value, 10) || 1;
         const totalAngle = 2 * Math.PI;
         const normalizedAngle = angle % totalAngle;
-        const winnerIndices = [];
+        const itemAngle = totalAngle / names.length;
 
-        for (let w = 0; w < numWinners; w++) {
-            const currentAngle = normalizedAngle + w * (totalAngle / numWinners);
-            const adjustedAngle = (totalAngle - currentAngle + ((totalAngle) / names.length) / 2) % totalAngle;
-            const winnerIndex = Math.floor(adjustedAngle / ((2 * Math.PI) / names.length)) % names.length;
-            winnerIndices.push(winnerIndex);
-        }
+        // Compute the single winner
+        const currentAngle = normalizedAngle;
+        const adjustedAngle = (totalAngle - currentAngle + (itemAngle / 2)) % totalAngle;
+        const winnerIndex = Math.floor(adjustedAngle / itemAngle) % names.length;
 
         // Alinear el ángulo para que el ganador quede alineado con el indicador
-        angle = -winnerIndices[0] * ((2 * Math.PI) / names.length);
+        angle = -winnerIndex * itemAngle;
 
         draw(ctxBig, canvasBig, angle);
 
         // Actualizar el color del indicador
         updateIndicatorColor();
 
-        // Mostrar los ganadores
-        winnerIndices.forEach(index => {
-            window.showWinner(names[index]);
-        });
+        // Obtener el ganador
+        const winner = names[winnerIndex];
+
+        // Mostrar el ganador
+        window.showWinner(winner);
+
+        // Llamar al resolver de la promesa con el ganador
+        if (typeof spinResolve === 'function') {
+            spinResolve(winner);
+        }
     }
 
     function updateIndicatorColor() {

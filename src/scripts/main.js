@@ -1,3 +1,5 @@
+// main.js
+
 document.addEventListener('DOMContentLoaded', function() {
     // Variables y elementos del DOM
     const rouletteConfiguration = document.getElementById('roulette-configuration');
@@ -14,11 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const numWinnersSelect = document.getElementById('numWinners');
 
-    // Obtener ambos botones de inicio de sorteo
+    // Obtener el botón de inicio de sorteo para la ruleta circular
     const startSpinBtnCircular = document.getElementById('startSpinBtnCircular');
-    const startSpinBtnVertical = document.getElementById('startSpinBtnVertical');
 
-    // Inicializar
+    // Inicializar la lista de nombres en la interfaz
     updateNamesList(); // Asegúrate de que esta función esté definida en tus scripts
 
     // Eventos de botones
@@ -27,8 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     spinAgainBtn.addEventListener('click', spinAgain);
     newRaffleBtn.addEventListener('click', resetApplication);
     closeButton.addEventListener('click', closeOverlay);
-    startSpinBtnCircular.addEventListener('click', startSpin);
-    startSpinBtnVertical.addEventListener('click', startSpin);
+    startSpinBtnCircular.addEventListener('click', () => startSpin('circular'));
 
     // Función para ir a la interfaz de la ruleta
     function goToRouletteInterface() {
@@ -40,39 +40,68 @@ document.addEventListener('DOMContentLoaded', function() {
         rouletteConfiguration.classList.add('d-none');
 
         // Mostrar el overlay de la ruleta antes de inicializar
-        showSpinOverlay(window.currentRoulette);
+        showSpinOverlay('circular');
 
-        if (window.currentRoulette === 'circular') {
-            ruletaCircular.init(
-                document.getElementById('canvasBig'),
-                dataManager.getItems(),
-                dataManager.getColors(),
-                numWinnersSelect,
-                overlay,
-                spinOverlay,
-                winnerDiv,
-                closeButton
-            );
-        } else if (window.currentRoulette === 'vertical') {
-            ruletaVertical.init(
-                document.getElementById('ruletaCanvasBig'),
-                dataManager.getItems(),
-                dataManager.getColors(),
-                numWinnersSelect,
-                overlay,
-                spinOverlay,
-                winnerDiv,
-                closeButton
-            );
-        }
+        ruletaCircular.init(
+            document.getElementById('canvasBig'),
+            dataManager.getItems(),
+            dataManager.getColors(),
+            numWinnersSelect,
+            overlay,
+            spinOverlay,
+            winnerDiv,
+            closeButton
+        );
     }
 
-    // Función para iniciar el sorteo desde el overlay
-    function startSpin() {
-        if (currentRoulette === 'circular') {
-            ruletaCircular.spin(parseInt(numWinnersSelect.value, 10));
-        } else if (currentRoulette === 'vertical') {
-            ruletaVertical.spin();
+    // Función para iniciar el sorteo
+    async function startSpin(type) {
+        const numWinners = parseInt(numWinnersSelect.value, 10) || 1;
+
+        if (numWinners > dataManager.getItems().length) {
+            alert('El número de ganadores excede el número de participantes.');
+            return;
+        }
+
+        // Preparar la lista de ganadores
+        const winners = [];
+
+        for (let i = 0; i < numWinners; i++) {
+            try {
+                let winner;
+                if (type === 'circular') {
+                    winner = await ruletaCircular.spin();
+                }
+
+                winners.push(winner);
+
+                // Eliminar al ganador de los datos
+                dataManager.removeItem(winner);
+
+                // Actualizar la ruleta circular con la lista actualizada de participantes
+                ruletaCircular.init(
+                    document.getElementById('canvasBig'),
+                    dataManager.getItems(),
+                    dataManager.getColors(),
+                    numWinnersSelect,
+                    overlay,
+                    spinOverlay,
+                    winnerDiv,
+                    closeButton
+                );
+
+            } catch (error) {
+                console.error('Error durante el giro:', error);
+                break;
+            }
+        }
+
+        // Mostrar todos los ganadores
+        if (winners.length > 0) {
+            overlay.classList.remove('d-none');
+            overlay.classList.add('d-flex');
+            winnerDiv.innerHTML = 'Ganadores:<br>' + winners.join('<br>');
+            spinOverlay.classList.add('d-none');
         }
     }
 
@@ -82,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.classList.remove('d-flex');
         closeButton.classList.add('hidden');
         stopConfetti(); // Asegúrate de que esta función esté definida en tus scripts
-        showSpinOverlay(currentRoulette);
+        showSpinOverlay('circular');
     }
 
     // Función para cerrar el overlay del ganador y regresar a la ruleta grande
@@ -92,10 +121,10 @@ document.addEventListener('DOMContentLoaded', function() {
         closeButton.classList.add('hidden');
         stopConfetti(); // Asegúrate de que esta función esté definida en tus scripts
         // Mostrar el overlay de la ruleta grande
-        showSpinOverlay(currentRoulette);
+        showSpinOverlay('circular');
     }
 
-    // Función para mostrar el ganador
+    // Función para mostrar el ganador individual (no usada directamente para múltiples ganadores)
     function showWinner(winnerName) {
         console.log("showWinner called with:", winnerName); // Depuración
         winnerDiv.textContent = `${winnerName}`;
@@ -122,9 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (type === 'circular') {
             document.getElementById('spinOverlayCircular').classList.remove('d-none');
             document.getElementById('spinOverlayVertical').classList.add('d-none');
-        } else if (type === 'vertical') {
-            document.getElementById('spinOverlayVertical').classList.remove('d-none');
-            document.getElementById('spinOverlayCircular').classList.add('d-none');
         }
     }
 
