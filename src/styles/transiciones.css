@@ -2,7 +2,7 @@
 
 /* Estilos generales */
 body {
-    background-color: #f3e5f5;
+    background-color: #ffffff;
     font-family: 'Fredoka One', cursive;
     margin: 0;
     padding: 0;
@@ -73,6 +73,7 @@ body {
     min-height: 50vh;
 }
 
+/*
 .roulette-selection-col:nth-child(1) {
     background-color: #ffe0b2;
 }
@@ -80,6 +81,8 @@ body {
 .roulette-selection-col:nth-child(2) {
     background-color: #b3e5fc;
 }
+*/
+
 
 /* Estilos para las tarjetas */
 .roulette-card {
@@ -99,7 +102,7 @@ body {
 .vertical-title {
     font-size: calc(1.5rem + 1vw);
     margin-bottom: 20px;
-    color: #4a148c;
+    color: #fbf8ff;
     transition: transform 0.3s;
 }
 
@@ -144,7 +147,7 @@ body {
 
 .roulette-card .card-text {
     font-size: calc(1rem + 0.5vw);
-    color: #6a1b9a;
+    color: #ffffff;
 }
 
 /* Animación para mover al centro y ampliar */

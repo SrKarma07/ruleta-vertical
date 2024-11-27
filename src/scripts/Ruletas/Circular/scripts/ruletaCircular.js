@@ -43,11 +43,13 @@ var ruletaCircular = (function() {
     function adjustCanvasSize() {
         const parent = canvasBig.parentElement; // Parent is .roulette-wrapper
         const container = parent.parentElement; // .ruleta-container
-        const availableHeight = window.innerHeight - container.offsetTop - 150; // Ajusta según el espacio del footer y otros elementos
-        const availableWidth = window.innerWidth - 100; // Ajusta según el espacio para el indicador y padding
+
+        // Calcular el tamaño disponible teniendo en cuenta el espacio para el indicador
+        const availableWidth = container.offsetWidth - parent.querySelector('#indicator').offsetWidth - 32; // 32px de padding/margen
+        const availableHeight = window.innerHeight - container.offsetTop - 200; // Ajusta según el espacio del footer y otros elementos
 
         // Determinar el tamaño máximo que puede ocupar el canvas sin invadir el espacio del indicador
-        const size = Math.min(parent.offsetWidth, availableHeight * 0.6, availableWidth * 0.6); // Ajusta el tamaño proporcionalmente
+        const size = Math.min(parent.offsetWidth, availableHeight * 0.9, availableWidth * 1.0); // Ajusta el tamaño proporcionalmente
 
         if (size <= 0) return; // Evitar tamaños negativos o cero
 
@@ -96,7 +98,7 @@ var ruletaCircular = (function() {
             context.rotate(startAngle + itemAngle / 2);
             context.textAlign = "right";
             context.fillStyle = "#000";
-            context.font = `${Math.max(12, radius / 10)}px Arial`; // Ajusta el tamaño del texto proporcionalmente
+            context.font = `${Math.max(14, radius / 10)}px Arial`; // Ajusta el tamaño del texto proporcionalmente
             context.fillText(names[i], radius - 10, 10);
             context.restore();
         }

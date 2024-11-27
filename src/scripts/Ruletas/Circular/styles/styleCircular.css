@@ -5,11 +5,11 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    /* Eliminar height: 100vh para evitar superposición con el footer */
     box-sizing: border-box;
     position: relative;
-    padding: 1rem;
+    padding: 2rem 1rem; /* Aumenta el padding para evitar superposición con el footer */
     overflow: hidden; /* Evita scroll innecesario */
+    margin-bottom: 3rem; /* Espacio adicional para el botón */
 }
 
 /* Wrapper para el canvas y el indicador */
@@ -18,27 +18,29 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 800px; /* Ajustar según necesidad */
-    /* aspect-ratio: 1; Eliminar para permitir flexibilidad en la orientación */
+    max-width: 1000px; /* Aumenta el tamaño máximo del contenedor */
+    flex-wrap: nowrap; /* Evita que los elementos se envuelvan */
 }
 
 /* Canvas de la ruleta */
 .roulette-wrapper canvas {
     width: 100%;
-    max-width: 600px;
+    max-width: 800px; /* Aumenta el tamaño máximo del canvas */
     height: auto; /* Mantiene el aspecto */
     flex-shrink: 0;
 }
 
 /* Indicador para la Ruleta Circular */
 #indicator {
+    margin-top: 1.5rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-left: 1rem; /* Espacio entre el canvas y el indicador */
+    margin-left: 1.5rem; /* Aumenta el espacio entre el canvas y el indicador */
 }
 
+/* Flecha del indicador */
 #triangleBig {
     width: 0;
     height: 0;
@@ -47,6 +49,7 @@
     border-right: clamp(2vh, 4vw, 5vh) solid #d32f2f;
 }
 
+/* Rectángulo del indicador */
 #rectangleBig {
     width: clamp(4vh, 8vw, 8vh);
     height: clamp(1vh, 2vw, 2vh);
@@ -65,6 +68,7 @@
     cursor: pointer;
     text-align: center;
     display: inline-block;
+    z-index: 5; /* Asegura que esté por encima de otros elementos si es necesario */
 }
 
 #startSpinBtnCircular:hover {
@@ -75,34 +79,34 @@
 @media (orientation: portrait) {
     .roulette-wrapper {
         flex-direction: row; /* Distribuir canvas e indicador horizontalmente */
+        align-items: center;
     }
 
     #indicator {
-        margin-left: 1rem;
+        margin-left: 1.5rem;
     }
 }
 
 @media (orientation: landscape) {
     .roulette-wrapper {
-        flex-direction: column; /* Mantener canvas arriba y indicador debajo */
+        flex-direction: row; /* Mantener canvas e indicador en fila */
+        align-items: center;
     }
 
     #indicator {
-        margin-left: 0;
-        margin-top: 1rem;
+        margin-left: 1.5rem;
     }
 }
 
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
     .roulette-wrapper {
-        flex-direction: column; /* Apilar canvas e indicador */
+        flex-direction: row; /* Mantener la disposición en fila */
         align-items: center;
     }
 
     #indicator {
-        margin-left: 0;
-        margin-top: 1rem;
+        margin-left: 0.5rem; /* Reducir el margen en pantallas pequeñas */
     }
 
     #triangleBig {
@@ -125,16 +129,16 @@
 @media (max-height: 500px) {
     .ruleta-container {
         padding: 1rem;
+        margin-bottom: 1rem; /* Reducir el margen inferior en pantallas con poca altura */
     }
 
     .roulette-wrapper {
-        flex-direction: column;
+        flex-direction: row; /* Mantener la disposición en fila */
         align-items: center;
     }
 
     #indicator {
-        margin-left: 0;
-        margin-top: 1rem;
+        margin-left: 0.5rem;
     }
 
     #startSpinBtnCircular {

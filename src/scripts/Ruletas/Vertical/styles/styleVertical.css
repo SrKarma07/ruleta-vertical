@@ -32,12 +32,12 @@
 
 #triangleLeftBig {
     left: 0;
-    border-right: 5vh solid #d32f2f;
+    border-left: 5vh solid #d32f2f;
 }
 
 #triangleRightBig {
     right: 0;
-    border-left: 5vh solid #d32f2f;
+    border-right: 5vh solid #d32f2f;
 }
 
 /* Botón para iniciar el sorteo */
