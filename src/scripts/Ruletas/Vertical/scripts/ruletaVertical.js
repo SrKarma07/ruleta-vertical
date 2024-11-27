@@ -1,3 +1,5 @@
+// ruletaVertical.js
+
 var ruletaVertical = (function() {
     let canvasBigVertical, ctxBigVertical;
     let triangleLeftBig, triangleRightBig;
@@ -17,6 +19,8 @@ var ruletaVertical = (function() {
     let colors = {};
     let overlay, spinOverlay, winnerDiv, closeButton;
     let numWinnersSelect;
+
+    let spinResolve; // Resolver de la promesa
 
     function init(canvasBig, itemsList, colorsMap, numWinnersSelectElement, overlayElement, spinOverlayElement, winnerDivElement, closeButtonElement) {
         canvasBigVertical = canvasBig;
@@ -48,7 +52,7 @@ var ruletaVertical = (function() {
     }
 
     function adjustCanvasSize() {
-        const parent = canvasBigVertical.parentElement; // Parent is .roulette-wrapper-vertical
+        const parent = canvasBigVertical.parentElement; // Parent es .roulette-wrapper-vertical
         const width = parent.offsetWidth;
         const height = parent.offsetHeight;
 
@@ -109,8 +113,6 @@ var ruletaVertical = (function() {
             let opacity = 1 - (distanceFromCenter / maxDistance);
             opacity = Math.max(0, Math.min(1, opacity));
 
-            // let saturation = opacity * 100; // No se usa
-
             let color = colorsVertical[i]; // Puedes ajustar la saturación si lo deseas
 
             context.fillStyle = color;
@@ -125,29 +127,37 @@ var ruletaVertical = (function() {
     }
 
     function spin() {
-        if (isAnimating || names.length === 0) {
-            alert('Por favor, añade al menos un nombre antes de iniciar la ruleta.');
-            return;
-        }
-        isAnimating = true;
-        startTime = null;
-        totalDuration = 5000 + Math.random() * 2000;
-        initialSpeed = 50;
+        return new Promise((resolve, reject) => {
+            if (isAnimating || names.length === 0) {
+                alert('Por favor, añade al menos un nombre antes de iniciar la ruleta.');
+                reject('Animación en progreso o sin elementos.');
+                return;
+            }
+            isAnimating = true;
+            startTime = null;
+            totalDuration = 5000 + Math.random() * 2000;
 
-        const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
-        position -= extraRotations * itemHeight;
+            // Establecer la duración de desaceleración al 70% del tiempo total
+            decelerationDuration = totalDuration * 0.7;
 
-        animationFrame = requestAnimationFrame(function(timestamp) {
-            animate(timestamp, initialSpeed);
+            initialSpeed = 50; // Velocidad angular inicial
+
+            // Calcular giros extra para mayor aleatoriedad
+            const extraRotations = Math.floor(Math.random() * names.length * 5) + names.length * 5;
+            position -= extraRotations * itemHeight;
+
+            spinResolve = resolve; // Guardar el resolver para usarlo en finalizeStop
+
+            animationFrame = requestAnimationFrame(animate.bind(this));
         });
     }
 
-    function animate(timestamp, speed) {
+    function animate(timestamp) {
         if (!startTime) startTime = timestamp;
         let elapsed = timestamp - startTime;
 
         if (elapsed < totalDuration - decelerationDuration) {
-            position -= speed;
+            position -= initialSpeed;
         } else if (elapsed < totalDuration) {
             let t = (elapsed - (totalDuration - decelerationDuration)) / decelerationDuration;
             let deceleratedSpeed = initialSpeed * easeOutCubic(1 - t);
@@ -160,9 +170,7 @@ var ruletaVertical = (function() {
         draw(ctxBigVertical, canvasBigVertical, position);
         updateIndicatorColor(); // Actualizar el color de los triángulos
 
-        animationFrame = requestAnimationFrame(function(timestamp) {
-            animate(timestamp, speed);
-        });
+        animationFrame = requestAnimationFrame(animate.bind(this));
     }
 
     function finalizeStop() {
@@ -177,8 +185,16 @@ var ruletaVertical = (function() {
 
         updateIndicatorColor(); // Actualizar el color de los triángulos
 
+        // Obtener el ganador
+        const winner = names[winnerIndex];
+
         // Mostrar el ganador
-        window.showWinner(names[winnerIndex]);
+        window.showWinner(winner);
+
+        // Llamar al resolver de la promesa con el ganador
+        if (typeof spinResolve === 'function') {
+            spinResolve(winner);
+        }
     }
 
     function updateIndicatorColor() {
@@ -216,11 +232,11 @@ var ruletaVertical = (function() {
             r = g = b = l; // Tono gris
         } else {
             const hue2rgb = function(p, q, t) {
-                if (t < 0) t += 1;
-                if (t > 1) t -= 1;
-                if (t < 1/6) return p + (q - p) * 6 * t;
-                if (t < 1/2) return q;
-                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                if(t < 0) t += 1;
+                if(t > 1) t -= 1;
+                if(t < 1/6) return p + (q - p) * 6 * t;
+                if(t < 1/2) return q;
+                if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
                 return p;
             };
 
