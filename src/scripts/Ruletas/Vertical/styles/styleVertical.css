@@ -42,13 +42,19 @@
 
 /* Botón para iniciar el sorteo */
 #startSpinBtnVertical {
-    margin-top: 20px;
-    padding: 15px 30px;
-    font-size: 1.5rem;
-    background-color: #8e24aa;
-    color: white;
+    margin-top: 1.5rem;
+    padding: 0.8em 1.5em;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    background-color:#ffcc00;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    z-index: 5; /* Asegura que esté por encima de otros elementos si es necesario */
 }
 
 #startSpinBtnVertical:hover {
-    background-color: #7b1fa2;
+    background-color: #fefe00;
 }

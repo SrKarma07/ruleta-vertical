@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (winners.length > 0) {
             overlay.classList.remove('d-none');
             overlay.classList.add('d-flex');
-            winnerDiv.innerHTML = 'Ganadores:<br>' + winners.join('<br>');
+            winnerDiv.innerHTML = 'Ganadores: <br>' + winners.join(' , ');
             spinOverlay.classList.add('d-none');
         }
     }

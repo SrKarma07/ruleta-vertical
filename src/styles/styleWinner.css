@@ -28,7 +28,7 @@
 
 /* Nombre del ganador */
 #winner {
-    font-size: clamp(2rem, 5vw, 5rem); /* Escala el tamaño del texto según el ancho de la pantalla */
+    font-size: clamp(1.5rem, 3vw, 4rem); /* Escala el tamaño del texto según el ancho de la pantalla */
     color: white;
     margin: 1rem 0;
     text-align: center;
@@ -64,14 +64,15 @@
 
 .winner-buttons button {
     padding: 0.8em 1.5em;
-    font-size: clamp(0.8rem, 2vw, 1.5rem); /* Escala el tamaño del texto */
+    font-size: clamp(0.6rem, 1.3vw, 1rem); /* Escala el tamaño del texto */
     background-color: #8e24aa;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
-    width: 100%; /* Asegura que el botón se ajuste a la celda de la grilla */
+    width: 80%; /* Asegura que el botón se ajuste a la celda de la grilla */
+    height: 80%;
     box-sizing: border-box;
 }
 
@@ -82,7 +83,7 @@
 /* Responsividad adicional */
 @media (max-height: 600px) {
     #winnerGif {
-        max-height: 40vh; /* Reduce el tamaño del GIF en pantallas más bajas */
+        max-height: 25vh; /* Reduce el tamaño del GIF en pantallas más bajas */
     }
 
     .winner-buttons button {

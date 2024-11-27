@@ -61,8 +61,8 @@
     margin-top: 1.5rem;
     padding: 0.8em 1.5em;
     font-size: clamp(1rem, 2vw, 1.5rem);
-    background-color: #8e24aa;
-    color: white;
+    background-color:#ffcc00;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -72,7 +72,7 @@
 }
 
 #startSpinBtnCircular:hover {
-    background-color: #7b1fa2;
+    background-color: #fefe00;
 }
 
 /* Responsividad según orientación */
