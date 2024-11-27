@@ -165,10 +165,6 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.btn-group-horizontal .btn:hover {
-    /* Mantiene los efectos hover existentes */
-}
-
 /* Ajustes responsivos */
 @media (max-width: 768px) {
     #winner {

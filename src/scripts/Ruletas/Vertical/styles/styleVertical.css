@@ -1,7 +1,7 @@
 /* Contenedor de la ruleta vertical */
 .ruleta-container-vertical {
     width: 100%;
-    height: 60vh;
+    height: 60vh; /* Mantiene la altura relativa a la viewport */
     margin: 0 auto;
 }
 
@@ -26,33 +26,36 @@
     transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-top: 3vh solid transparent;
-    border-bottom: 3vh solid transparent;
+    border-top: 3vh solid transparent; /* Mantiene unidades responsivas */
+    border-bottom: 3vh solid transparent; /* Mantiene unidades responsivas */
 }
 
 #triangleLeftBig {
     left: 0;
-    border-left: 5vh solid #d32f2f;
+    border-left: 5vh solid #d32f2f; /* Mantiene unidades responsivas */
 }
 
 #triangleRightBig {
     right: 0;
-    border-right: 5vh solid #d32f2f;
+    border-right: 5vh solid #d32f2f; /* Mantiene unidades responsivas */
 }
 
 /* Botón para iniciar el sorteo */
 #startSpinBtnVertical {
     margin-top: 1.5rem;
-    padding: 0.8em 1.5em;
-    font-size: clamp(1rem, 2vw, 1.5rem);
-    background-color:#ffcc00;
+    padding: 0.4rem 0.8rem; /* Reducido para ser más compacto */
+    font-size: clamp(0.9rem, 2vw, 1.2rem); /* Ajuste de tamaño responsivo */
+    background-color: #ffcc00;
     color: rgb(0, 0, 0);
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3rem; /* Convertido de 5px a rem */
     cursor: pointer;
     text-align: center;
-    display: inline-block;
-    z-index: 5; /* Asegura que esté por encima de otros elementos si es necesario */
+    display: block; /* Cambiar a block para centrar con margin auto */
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 5; /* Mantiene la posición superior */
+    transition: background-color 0.3s ease; /* Suaviza la transición de color */
 }
 
 #startSpinBtnVertical:hover {
