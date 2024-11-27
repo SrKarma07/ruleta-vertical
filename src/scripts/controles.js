@@ -45,7 +45,7 @@ function handleRangeButtonClick(event) {
     const range = parseInt(event.target.getAttribute('data-range'), 10);
     if (!isNaN(range)) {
         const items = Array.from({ length: range }, (_, i) => (i + 1).toString());
-        dataManager.clearData();
+        dataManager.clearData(); // Limpia datos existentes
         items.forEach((item, index) => {
             dataManager.addItem(item);
         });
@@ -66,7 +66,7 @@ function handleCustomRangeButtonClick() {
         return;
     }
     const items = Array.from({ length: customRange }, (_, i) => (i + 1).toString());
-    dataManager.clearData();
+    dataManager.clearData(); // Limpia datos existentes
     items.forEach((item, index) => {
         dataManager.addItem(item);
     });
@@ -79,10 +79,13 @@ function handleCustomRangeButtonClick() {
 }
 
 function showSection(sectionId) {
+    // Limpia datos existentes al cambiar de sección
+    dataManager.clearData();
     document.getElementById('ranges').classList.add('d-none');
     document.getElementById('inputSection').classList.add('d-none');
     document.getElementById('uploadSection').classList.add('d-none');
     document.getElementById(sectionId).classList.remove('d-none');
+    updateNamesList();
 }
 
 function showUploadSection() {
@@ -121,6 +124,8 @@ function updateNamesList() {
 }
 
 function addNamesToWheel(namesArray) {
+    // Asumiendo que esta función se llama después de seleccionar una nueva lista
+    // No es necesario limpiar aquí si ya se ha limpiado en showSection
     const items = dataManager.getItems();
     const colors = dataManager.getColors();
     namesArray.forEach((name) => {

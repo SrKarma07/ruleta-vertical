@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <!-- Meta y títulos -->
     <meta charset="UTF-8">
@@ -14,152 +15,158 @@
     <link rel="stylesheet" href="./scripts/Ruletas/Circular/styles/styleCircular.css">
     <link rel="stylesheet" href="./scripts/Ruletas/Vertical/styles/styleVertical.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
-    <main>
-    <!-- Contenido principal -->
-    <div class="container-fluid p-3 flex-grow-1 contenedor-principal">
+    
+        <!-- Contenido principal -->
+        <div class="container-fluid p-3 flex-grow-1 contenedor-principal">
 
 
-        <!-- Interfaz de selección de ruleta -->
-        <div id="roulette-selection" class="row g-0">
-            <!-- Columnas para las tarjetas -->
-            <div class="col-lg-6 col-md-12 roulette-selection-col">
-                <div class="card roulette-card" id="circularRouletteCard">
-                    <div class="card-body text-center">
-                        <h3 class="card-title circular-title">Ruleta Circular</h3>
-                        <img src="./assets/circular.png" alt="Ruleta Circular" class="img-fluid roulette-image">
-                        <p class="card-text">Ideal para salones de clase o grupos de 45 individuos</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-12 roulette-selection-col">
-                <div class="card roulette-card" id="verticalRouletteCard">
-                    <div class="card-body text-center">
-                        <h3 class="card-title vertical-title">Ruleta Vertical</h3>
-                        <img src="./assets/vertical.png" alt="Ruleta Vertical" class="img-fluid roulette-image">
-                        <p class="card-text">Ideal para sorteos a gran escala con más de 50 individuos hasta 10,000</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Interfaz de configuración de ruleta -->
-        <div id="roulette-configuration" class="d-none">
-            <div class="row gx-4">
-                <!-- Sidebar -->
-                <aside class="col-lg-3 col-md-4 col-sm-12">
-                    <div class="sidebar">
-                        <h2 class="navbar-title">Configuración</h2>
-
-                        <h5 class="mt-4">Número de ganadores</h5>
-                        <select id="numWinners" class="form-select mb-4">
-                            <option value="1">1 Ganador</option>
-                            <option value="2">2 Ganadores</option>
-                            <option value="3">3 Ganadores</option>
-                            <option value="4">4 Ganadores</option>
-                            <option value="5">5 Ganadores</option>
-                        </select>
-
-                        <!-- Controles -->
-                        <div class="controls-wrapper">
-                            <button id="btnRangos" class="btn btn-option mt-3 fw-bold">Rangos</button>
-                            <button id="btnIntroduceNombres" class="btn btn-option mt-2 fw-bold">Introduce Nombres</button>
-                            <button id="btnAddList" class="btn btn-option mt-2 fw-bold">Añadir Lista</button>
-
-                            <!-- Secciones desplegables -->
-                            <div id="ranges" class="control-section d-none">
-                                <button data-range="10" class="btn btn-secondary">1-10</button>
-                                <button data-range="20" class="btn btn-secondary">1-20</button>
-                                <button data-range="50" class="btn btn-secondary">1-50</button>
-                                <button data-range="100" class="btn btn-secondary">1-100</button>
-                                <input type="number" id="custom-range" class="inputRange form-control mt-2" placeholder="Inserte rango">
-                                <button id="add-custom-range" class="btnRange btn btn-primary mt-2">Agregar</button>
-                            </div>
-
-                            <div id="inputSection" class="control-section d-none">
-                                <input type="text" id="studentName" class="form-control w-100" placeholder="Ingrese un nombre">
-                                <button id="addStudentBtn" class="btn btn-primary mt-2">Agregar</button>
-                            </div>
-
-                            <div id="uploadSection" class="control-section d-none">
-                                <input type="file" id="fileInput" class="form-control" accept=".xlsx, .xls, .pdf">
-                                <button id="uploadBtn" class="btn btn-primary mt-2 w-50">Subir archivo</button>
-                                <button id="addFromFileBtn" class="btn btn-secondary mt-2 w-50 d-none">Agregar</button>
-                            </div>
-                        </div>
-
-                        <!-- Botones de acción -->
-                        <div class="btn-group-horizontal w-100 mt-4">
-                            <button id="clearWheelBtn" class="btn btn-danger">Limpiar Ruleta</button>
-                            <button id="newWheelBtn" class="btn btn-warning">Nueva Ruleta</button>
+            <!-- Interfaz de selección de ruleta -->
+            <div id="roulette-selection" class="row g-0">
+                <!-- Columnas para las tarjetas -->
+                <div class="col-lg-6 col-md-12 roulette-selection-col">
+                    <div class="card roulette-card" id="circularRouletteCard">
+                        <div class="card-body text-center">
+                            <h3 class="card-title circular-title">Ruleta Circular</h3>
+                            <img src="./assets/circular.png" alt="Ruleta Circular" class="img-fluid roulette-image">
+                            <p class="card-text">Ideal para salones de clase o grupos de 45 individuos</p>
                         </div>
                     </div>
-                </aside>
-
-                <!-- Contenedor de elementos y botón de sorteo -->
-                <main class="col-lg-9 col-md-8 col-sm-12 d-flex flex-column align-items-center">
-                    <div id="namesList" class="names-list mb-4 p-2"></div>
-                    <button id="startRaffleBtn" class="btn btn-success mt-2">SORTEAR</button>
-                </main>
-            </div>
-        </div>
-
-        <!-- Capa oscura para el giro -->
-        <div id="spinOverlay" class="d-none">
-            <!-- Contenedor para Ruleta Circular -->
-            <div id="spinOverlayCircular" class="spin-overlay-section d-none">
-                <div id="ruletaContainerCircular" class="ruleta-container">
-                    <!-- Envolver canvas y indicador en un contenedor -->
-                    <div class="roulette-wrapper">
-                        <canvas id="canvasBig"></canvas>
-                        <!-- Indicador para Ruleta Circular -->
-                        <div id="indicator">
-                            <div id="triangleBig"></div>
-                            <div id="rectangleBig"></div>
+                </div>
+                <div class="col-lg-6 col-md-12 roulette-selection-col">
+                    <div class="card roulette-card" id="verticalRouletteCard">
+                        <div class="card-body text-center">
+                            <h3 class="card-title vertical-title">Ruleta Vertical</h3>
+                            <img src="./assets/vertical.png" alt="Ruleta Vertical" class="img-fluid roulette-image">
+                            <p class="card-text">Ideal para sorteos a gran escala con más de 50 individuos hasta 10,000
+                            </p>
                         </div>
                     </div>
-                    <!-- Botón para iniciar el sorteo -->
-                    <button id="startSpinBtnCircular" class="btn btn-primary mt-3">Iniciar Sorteo</button>
                 </div>
             </div>
 
-            <!-- Contenedor para Ruleta Vertical -->
-            <div id="spinOverlayVertical" class="spin-overlay-section d-none">
-                <div id="ruletaContainerVertical" class="ruleta-container-vertical">
-                    <!-- Envolver canvas y triángulos en un contenedor -->
-                    <div class="roulette-wrapper-vertical">
-                        <div id="triangleLeftBig" class="triangle-side"></div>
-                        <canvas id="ruletaCanvasBig"></canvas>
-                        <div id="triangleRightBig" class="triangle-side"></div>
+            <!-- Interfaz de configuración de ruleta -->
+            <div id="roulette-configuration" class="d-none">
+                <div class="row gx-4">
+                    <!-- Sidebar -->
+                    <aside class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="sidebar">
+                            <h2 class="navbar-title">Configuración</h2>
+
+                            <h5 class="mt-4">Número de ganadores</h5>
+                            <select id="numWinners" class="form-select mb-4">
+                                <option value="1">1 Ganador</option>
+                                <option value="2">2 Ganadores</option>
+                                <option value="3">3 Ganadores</option>
+                                <option value="4">4 Ganadores</option>
+                                <option value="5">5 Ganadores</option>
+                            </select>
+
+                            <!-- Controles -->
+                            <div class="controls-wrapper">
+                                <button id="btnRangos" class="btn btn-option mt-3 fw-bold">Rangos</button>
+                                <button id="btnIntroduceNombres" class="btn btn-option mt-2 fw-bold">Introduce
+                                    Nombres</button>
+                                <button id="btnAddList" class="btn btn-option mt-2 fw-bold">Añadir Lista</button>
+
+                                <!-- Secciones desplegables -->
+                                <div id="ranges" class="control-section d-none">
+                                    <button data-range="10" class="btn btn-secondary">1-10</button>
+                                    <button data-range="20" class="btn btn-secondary">1-20</button>
+                                    <button data-range="50" class="btn btn-secondary">1-50</button>
+                                    <button data-range="100" class="btn btn-secondary">1-100</button>
+                                    <input type="number" id="custom-range" class="inputRange form-control mt-2"
+                                        placeholder="Inserte rango">
+                                    <button id="add-custom-range" class="btnRange btn btn-primary mt-2">Agregar</button>
+                                </div>
+
+                                <div id="inputSection" class="control-section d-none">
+                                    <input type="text" id="studentName" class="form-control w-100"
+                                        placeholder="Ingrese un nombre">
+                                    <button id="addStudentBtn" class="btn btn-primary mt-2">Agregar</button>
+                                </div>
+
+                                <div id="uploadSection" class="control-section d-none">
+                                    <input type="file" id="fileInput" class="form-control" accept=".xlsx, .xls, .pdf">
+                                    <button id="uploadBtn" class="btn btn-primary mt-2 w-50">Subir archivo</button>
+                                    <button id="addFromFileBtn"
+                                        class="btn btn-secondary mt-2 w-50 d-none">Agregar</button>
+                                </div>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="btn-group-horizontal w-100 mt-4">
+                                <button id="clearWheelBtn" class="btn btn-danger">Limpiar Ruleta</button>
+                                <button id="newWheelBtn" class="btn btn-warning">Nueva Ruleta</button>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Contenedor de elementos y botón de sorteo -->
+                    <main class="col-lg-9 col-md-8 col-sm-12 d-flex flex-column align-items-center">
+                        <div id="namesList" class="names-list mb-4 p-2"></div>
+                        <button id="startRaffleBtn" class="btn btn-success mt-2">SORTEAR</button>
+                    </main>
+                </div>
+            </div>
+
+            <!-- Capa oscura para el giro -->
+            <div id="spinOverlay" class="d-none">
+                <!-- Contenedor para Ruleta Circular -->
+                <div id="spinOverlayCircular" class="spin-overlay-section d-none">
+                    <div id="ruletaContainerCircular" class="ruleta-container">
+                        <!-- Envolver canvas y indicador en un contenedor -->
+                        <div class="roulette-wrapper">
+                            <canvas id="canvasBig"></canvas>
+                            <!-- Indicador para Ruleta Circular -->
+                            <div id="indicator">
+                                <div id="triangleBig"></div>
+                                <div id="rectangleBig"></div>
+                            </div>
+                        </div>
+                        <!-- Botón para iniciar el sorteo -->
+                        <button id="startSpinBtnCircular" class="btn btn-primary mt-3">Iniciar Sorteo</button>
                     </div>
-                    <!-- Botón para iniciar el sorteo -->
-                    <button id="startSpinBtnVertical" class="btn btn-primary mt-3">Iniciar Sorteo</button>
+                </div>
+
+                <!-- Contenedor para Ruleta Vertical -->
+                <div id="spinOverlayVertical" class="spin-overlay-section d-none">
+                    <div id="ruletaContainerVertical" class="ruleta-container-vertical">
+                        <!-- Envolver canvas y triángulos en un contenedor -->
+                        <div class="roulette-wrapper-vertical">
+                            <div id="triangleLeftBig" class="triangle-side"></div>
+                            <canvas id="ruletaCanvasBig"></canvas>
+                            <div id="triangleRightBig" class="triangle-side"></div>
+                        </div>
+                        <!-- Botón para iniciar el sorteo -->
+                        <button id="startSpinBtnVertical" class="btn btn-primary mt-3">Iniciar Sorteo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capa oscura para el ganador -->
+            <div id="overlay" class="d-none border border-3 border-primary">
+                <!-- Imagen de ganador -->
+                <img id="winnerGif" src="./assets/ganador.gif" alt="Ganador">
+                <div id="winner"></div>
+                <button id="closeButton" class="btn btn-danger mt-3 hidden">X</button>
+                <div class="winner-buttons">
+                    <button id="spinAgainBtn" class="btn btn-primary mt-2">Girar</button>
+                    <button id="newRaffleBtn" class="btn btn-warning mt-2">Nuevo Sorteo</button>
                 </div>
             </div>
         </div>
 
-        <!-- Capa oscura para el ganador -->
-        <div id="overlay" class="d-none border border-3 border-primary">
-            <!-- Imagen de ganador -->
-            <img id="winnerGif" src="https://media.tenor.com/vP00ZuXznUUAAAAi/ganador-soyganador.gif" alt="Ganador">
-            <div id="winner"></div>
-            <button id="closeButton" class="btn btn-danger mt-3 hidden">X</button>
-            <div class="winner-buttons">
-                <button id="spinAgainBtn" class="btn btn-primary mt-2">Girar</button>
-                <button id="newRaffleBtn" class="btn btn-warning mt-2">Nuevo Sorteo</button>
-            </div>
-        </div>
-    </div>
-</main>
     <!-- Footer -->
     <footer class="footer mt-auto d-flex align-items-center justify-content-center py-3">
-        
-        <small class="text-center d-flex align-items-center"></small>
-        <p class="text-center m-0 d-flex align-items-center">
-            &copy;2024 Dirección Nacional de Tecnologías para la Educación | Desarrollado por: Jeremy David Torres
-        </p>
-        <span class="mx-3" style="border-left: 1px solid #d3d3d3; height: 50%"></span>
-    </small>
+
+        <small class="text-center d-flex align-items-center">
+            <p class="text-center m-0 d-flex align-items-center">
+                &copy;2024 Dirección Nacional de Tecnologías para la Educación | Desarrollado por: Jeremy David Torres
+            </p>
+            <span class="mx-3" style="border-left: 1px solid #d3d3d3; height: 50%"></span>
+        </small>
         <small class="text-center d-flex align-items-center">
             <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank"
                 rel="noopener noreferrer" class="text-light"
