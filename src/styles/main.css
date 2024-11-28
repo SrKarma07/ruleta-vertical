@@ -264,3 +264,46 @@ body {
     visibility: hidden; /* Hace invisible el contenedor cuando el overlay se activa */
     opacity: 0; /* Agrega un efecto de desaparición */
 }
+
+/* Estilos generales para el botón de regresar */
+.back-btn-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, visibility 0.3s ease;
+}
+
+/* Estilo para el botón de regresar */
+.back-btn {
+    background-color: transparent; 
+    color: #FF6347; /* Color rojizo para resaltar */
+    border: none;
+    border-radius: 50%;
+    width: 40px; 
+    height: 40px; 
+    font-size: 20px; 
+    cursor: pointer;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+}
+
+/* Efecto hover */
+.back-btn:hover {
+    transform: scale(1.1); /* Escala con suavidad */
+}
+
+/* Estilo del icono */
+.back-btn i {
+    font-size: 1.2em; 
+    color: #FF6347; /* Color rojizo */
+}
+
+/* Ocultar el botón cuando se activa el overlay */
+#overlay + .back-btn-container {
+    visibility: hidden;
+    opacity: 0;
+}
