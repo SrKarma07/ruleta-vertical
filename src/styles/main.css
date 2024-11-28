@@ -209,3 +209,58 @@ body {
         }
     }
 }
+
+/* Estilos generales para el botón */
+.expand-screen-btn-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, visibility 0.3s ease;
+}
+
+/* Estilos generales para el botón */
+.expand-screen-btn-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, visibility 0.3s ease;
+}
+
+/* Estilo para el botón de expansión (sin fondo circular y con icono más pequeño) */
+.expand-screen-btn {
+    background-color: transparent; /* Fondo transparente */
+    color: #FFA500; /* Color anaranjado amarillento */
+    border: none;
+    border-radius: 50%;
+    width: 40px; /* Tamaño reducido */
+    height: 40px; /* Tamaño reducido */
+    font-size: 20px; /* Tamaño adecuado para el icono */
+    cursor: pointer;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+}
+
+/* Efecto hover */
+.expand-screen-btn:hover {
+    transform: scale(1.1); /* Escala con suavidad */
+}
+
+/* Estilo del icono */
+.expand-screen-btn i {
+    font-size: 1.2em; /* Ajusta el tamaño del icono */
+    color: #FFA500; /* Color anaranjado amarillento */
+}
+
+/* Ocultar el botón cuando se activa el overlay */
+#overlay + .expand-screen-btn-container {
+    visibility: hidden; /* Hace invisible el contenedor cuando el overlay se activa */
+    opacity: 0; /* Agrega un efecto de desaparición */
+}
