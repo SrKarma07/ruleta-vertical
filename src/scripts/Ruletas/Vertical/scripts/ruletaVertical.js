@@ -1,5 +1,3 @@
-// ruletaVertical.js
-
 var ruletaVertical = (function() {
     let canvasBigVertical, ctxBigVertical;
     let triangleLeftBig, triangleRightBig;

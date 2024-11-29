@@ -1,10 +1,8 @@
-// ruletaCircular.js
-
 var ruletaCircular = (function() {
     let canvasBig, ctxBig;
     let names = [];
     let colorsCircular = [];
-    let angle = 0; // Ángulo actual de rotación en radianes
+    let angle = 0;
     let isAnimating = false;
     let startTime = null;
     let totalDuration = 5000 + Math.random() * 2000;
@@ -36,7 +34,7 @@ var ruletaCircular = (function() {
             return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
         });
 
-        // Ajustar el tamaño después de un pequeño retraso para asegurar que el canvas esté visible
+        
         setTimeout(() => {
             adjustCanvasSize();
         }, 100);
@@ -45,17 +43,17 @@ var ruletaCircular = (function() {
     }
 
     function adjustCanvasSize() {
-        const parent = canvasBig.parentElement; // Parent is .roulette-wrapper
-        const container = parent.parentElement; // .ruleta-container
+        const parent = canvasBig.parentElement;
+        const container = parent.parentElement; 
 
-        // Calcular el tamaño disponible teniendo en cuenta el espacio para el indicador
-        const availableWidth = container.offsetWidth - parent.querySelector('#indicator').offsetWidth - 32; // 32px de padding/margen
-        const availableHeight = window.innerHeight - container.offsetTop - 200; // Ajusta según el espacio del footer y otros elementos
+        
+        const availableWidth = container.offsetWidth - parent.querySelector('#indicator').offsetWidth - 32; 
+        const availableHeight = window.innerHeight - container.offsetTop - 200; 
 
-        // Determinar el tamaño máximo que puede ocupar el canvas sin invadir el espacio del indicador
-        const size = Math.min(parent.offsetWidth, availableHeight * 0.9, availableWidth * 1.0); // Ajusta el tamaño proporcionalmente
+        
+        const size = Math.min(parent.offsetWidth, availableHeight * 0.9, availableWidth * 1.0); 
 
-        if (size <= 0) return; // Evitar tamaños negativos o cero
+        if (size <= 0) return;
 
         canvasBig.width = size * window.devicePixelRatio;
         canvasBig.height = size * window.devicePixelRatio;
@@ -63,7 +61,7 @@ var ruletaCircular = (function() {
         canvasBig.style.width = size + 'px';
         canvasBig.style.height = size + 'px';
 
-        ctxBig.setTransform(1, 0, 0, 1, 0, 0); // Reset scaling
+        ctxBig.setTransform(1, 0, 0, 1, 0, 0);
         ctxBig.scale(window.devicePixelRatio, window.devicePixelRatio);
 
         draw(ctxBig, canvasBig, angle);
@@ -71,22 +69,19 @@ var ruletaCircular = (function() {
 
     function draw(context, canvasElement, currentAngle) {
         const numItems = names.length;
-        const radius = canvasElement.width / (2 * window.devicePixelRatio) - 10; // Margen de 10px
+        const radius = canvasElement.width / (2 * window.devicePixelRatio) - 10;
         const centerX = canvasElement.width / (2 * window.devicePixelRatio);
         const centerY = canvasElement.height / (2 * window.devicePixelRatio);
         const itemAngle = (2 * Math.PI) / numItems;
 
         context.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-        // Evitar radio negativo
         if (radius <= 0) return;
 
-        // Dibujar cada segmento
         for (let i = 0; i < numItems; i++) {
             const startAngle = currentAngle + i * itemAngle;
             const endAngle = startAngle + itemAngle;
 
-            // Dibujar segmento
             context.beginPath();
             context.moveTo(centerX, centerY);
             context.arc(centerX, centerY, radius, startAngle, endAngle);
@@ -102,7 +97,7 @@ var ruletaCircular = (function() {
             context.rotate(startAngle + itemAngle / 2);
             context.textAlign = "right";
             context.fillStyle = "#000";
-            context.font = `${Math.max(14, radius / 10)}px Arial`; // Ajusta el tamaño del texto proporcionalmente
+            context.font = `${Math.max(14, radius / 10)}px Arial`;
             context.fillText(names[i], radius - 10, 10);
             context.restore();
         }
@@ -148,12 +143,8 @@ var ruletaCircular = (function() {
             finalizeStop();
             return;
         }
-
         draw(ctxBig, canvasBig, angle);
-
-        // Actualizar el color del indicador
         updateIndicatorColor();
-
         animationFrame = requestAnimationFrame(animate.bind(this));
     }
 
@@ -163,27 +154,18 @@ var ruletaCircular = (function() {
         const totalAngle = 2 * Math.PI;
         const normalizedAngle = angle % totalAngle;
         const itemAngle = totalAngle / names.length;
-
-        // Compute the single winner
         const currentAngle = normalizedAngle;
         const adjustedAngle = (totalAngle - currentAngle + (itemAngle / 2)) % totalAngle;
         const winnerIndex = Math.floor(adjustedAngle / itemAngle) % names.length;
 
-        // Alinear el ángulo para que el ganador quede alineado con el indicador
         angle = -winnerIndex * itemAngle;
-
         draw(ctxBig, canvasBig, angle);
-
-        // Actualizar el color del indicador
         updateIndicatorColor();
 
-        // Obtener el ganador
         const winner = names[winnerIndex];
 
-        // Mostrar el ganador
         window.showWinner(winner);
 
-        // Llamar al resolver de la promesa con el ganador
         if (typeof spinResolve === 'function') {
             spinResolve(winner);
         }
@@ -197,10 +179,7 @@ var ruletaCircular = (function() {
         const segmentIndex = Math.floor(adjustedAngle / segmentAngle) % names.length;
         const currentColor = colorsCircular[segmentIndex];
 
-        // Actualizar el color del triángulo
         document.getElementById('triangleBig').style.borderRightColor = currentColor;
-
-        // Actualizar el color del rectángulo
         document.getElementById('rectangleBig').style.backgroundColor = currentColor;
     }
 

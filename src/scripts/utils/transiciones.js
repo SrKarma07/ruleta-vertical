@@ -1,5 +1,3 @@
-// transiciones.js
-
 document.addEventListener('DOMContentLoaded', function() {
     const rouletteSelection = document.getElementById('roulette-selection');
     const rouletteConfiguration = document.getElementById('roulette-configuration');
@@ -77,9 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.currentRoulette = type;
     }
 
-    // Ocultar el título después de la configuración
     const startRaffleBtn = document.getElementById('startRaffleBtn');
     startRaffleBtn.addEventListener('click', function() {
-        mainTitle.classList.add('d-none');
     });
 });

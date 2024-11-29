@@ -73,17 +73,6 @@ body {
     min-height: 50vh;
 }
 
-/*
-.roulette-selection-col:nth-child(1) {
-    background-color: #ffe0b2;
-}
-
-.roulette-selection-col:nth-child(2) {
-    background-color: #b3e5fc;
-}
-*/
-
-
 /* Estilos para las tarjetas */
 .roulette-card {
     border: none;
@@ -113,9 +102,6 @@ body {
 #verticalRouletteCard:hover .vertical-title {
     animation: swing 2s infinite;
 }
-
-/* Intercambio de animaciones */
-/* Ruleta Circular tiene animación bounce y Ruleta Vertical tiene animación swing */
 
 /* Animación de rebote */
 @keyframes bounce {

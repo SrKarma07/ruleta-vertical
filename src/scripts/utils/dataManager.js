@@ -1,5 +1,3 @@
-// dataManager.js
-
 const dataManager = (function() {
     let items = [];
     let colors = {};
@@ -40,5 +38,4 @@ const dataManager = (function() {
     };
 })();
 
-// Expose globally
 window.dataManager = dataManager;

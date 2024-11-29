@@ -1,9 +1,5 @@
-// controles.js
-
 // Variables y elementos del DOM
 const numWinnersSelect = document.getElementById('numWinners');
-
-// Eventos de control
 document.getElementById("addStudentBtn").addEventListener("click", addStudent);
 document.querySelectorAll('#ranges button[data-range]').forEach(button => {
     button.addEventListener('click', handleRangeButtonClick);
@@ -124,8 +120,6 @@ function updateNamesList() {
 }
 
 function addNamesToWheel(namesArray) {
-    // Asumiendo que esta función se llama después de seleccionar una nueva lista
-    // No es necesario limpiar aquí si ya se ha limpiado en showSection
     const items = dataManager.getItems();
     const colors = dataManager.getColors();
     namesArray.forEach((name) => {
@@ -138,7 +132,6 @@ function addNamesToWheel(namesArray) {
     updateNamesList();
     alert(`${namesArray.length} nombres añadidos a la ruleta.`);
 }
-
 function clearWheel() {
     if (confirm('¿Está seguro de que desea limpiar la ruleta?')) {
         dataManager.clearData();
@@ -151,5 +144,4 @@ function resetApplication() {
     location.reload();
 }
 
-// Exponer updateNamesList globalmente para que otros módulos puedan llamarlo
 window.updateNamesList = updateNamesList;

@@ -1,5 +1,3 @@
-// ingresarListado.js
-
 // Functions to handle file uploads (Excel and PDF)
 function handleFileUpload() {
     const fileInput = document.getElementById('fileInput');
@@ -8,7 +6,6 @@ function handleFileUpload() {
         alert('Por favor, seleccione un archivo.');
         return;
     }
-
     const fileName = file.name.toLowerCase();
     if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
         readExcelFile(file);
@@ -41,7 +38,6 @@ function readPDFFile(file) {
         const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
         extractedNames = [];
         let fullText = '';
-
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const textContent = await page.getTextContent();
@@ -49,11 +45,9 @@ function readPDFFile(file) {
             const pageText = textItems.map(item => item.str).join(' ');
             fullText += pageText + ' ';
         }
-
         fullText = fullText.replace(/\s+/g, ' ').trim();
         const namePattern = /\d+\.\s*/g;
         const splitText = fullText.split(namePattern).filter(s => s.trim() !== '');
-
         splitText.forEach(name => {
             name = name.replace(/^\d+\.\s*/, '').trim();
             const formattedName = formatName(name);
@@ -61,7 +55,6 @@ function readPDFFile(file) {
                 extractedNames.push(formattedName);
             }
         });
-
         alert(`${extractedNames.length} nombres extraídos. Presione "Agregar" para añadirlos a la ruleta.`);
         document.getElementById('addFromFileBtn').classList.remove('d-none');
     };

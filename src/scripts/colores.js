@@ -1,6 +1,3 @@
-// colores.js
-
-// Function to get the next color in the color wheel
 function getNextColor(index, totalItems) {
     const hue = (index / totalItems) * 360;
     const { r, g, b } = hslToRgb(hue, 100, 50);
@@ -21,6 +18,5 @@ function hslToRgb(h, s, l) {
     };
 }
 
-// Expose functions globally
 window.getNextColor = getNextColor;
 window.hslToRgb = hslToRgb;

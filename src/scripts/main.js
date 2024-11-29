@@ -184,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para mostrar el ganador (ya no será usada para múltiples ganadores)
     function showWinner(winnerName) {
-        console.log("showWinner called with:", winnerName); // Depuración
         winnerDiv.textContent = `${winnerName}`;
         overlay.classList.remove('d-none');
         overlay.classList.add('d-flex');
